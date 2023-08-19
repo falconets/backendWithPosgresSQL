@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "nodemon lib/src/index.js",
+    "start": "nodemon ./lib/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
