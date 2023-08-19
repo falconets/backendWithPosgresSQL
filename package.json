@@ -4,7 +4,7 @@
   "description": "Relation database to keep transactions and user records",
   "type": "module",
   "scripts": {
-    "build": "tsc && npm start",
+    "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "ts-node index.ts",
     "start:dev": "nodemon index.ts",
