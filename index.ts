@@ -9,7 +9,7 @@ import { resolvers } from "./src/resolvers";
 import Pool from "./src/config";
 import models from "./src/models";
 
-const port = 3002;
+const port = 3000;
 
 const app = express();
 const httpServer = http.createServer(app);
