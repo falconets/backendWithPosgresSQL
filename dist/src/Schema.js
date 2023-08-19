@@ -1,4 +1,7 @@
-export const typeDefs = `#graphql
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.typeDefs = void 0;
+exports.typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
   # This "Book" type defines the queryable fields for every book in our data source.
@@ -25,4 +28,4 @@ export const typeDefs = `#graphql
     updateBook(id:String!, store:String!): Book
   }
 `;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU2NoZW1hLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL1NjaGVtYS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQSxNQUFNLENBQUMsTUFBTSxRQUFRLEdBQUc7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0NBMEJ2QixDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU2NoZW1hLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL1NjaGVtYS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFDYSxRQUFBLFFBQVEsR0FBRzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Q0EwQnZCLENBQUMifQ==
