@@ -2,11 +2,11 @@
   "name": "busposgres",
   "version": "1.1.0",
   "description": "Relation database to keep transactions and user records",
-  "main": "dist/index.js",
+  "main": "lib/src/index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "nodemon dist/src/index.js",
+    "start": "nodemon lib/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -40,5 +40,6 @@
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1"
-  }
+  },
+  "private": true
 }

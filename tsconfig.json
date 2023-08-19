@@ -1,11 +1,10 @@
 {
       "compilerOptions": {
-            "target": "ES2015",
+            "target": "ES2017",
             "module":"CommonJS",
             "checkJs": true,
             "declaration":false,
-            "outDir" : "./dist/",
-            "rootDir": "./",
+            "outDir" : "lib",
             "strict":true,
             "moduleResolution": "node",
             "noFallthroughCasesInSwitch": true,
@@ -17,8 +16,14 @@
             "isolatedModules": true,
             "noImplicitAny": true,
             "useUnknownInCatchVariables": false,
-            "inlineSourceMap": true
+            "inlineSourceMap": false,
+            "noUnusedLocals": true,
+            "sourceMap": true,
+            "types":["node"],
+            "allowJs": true,
+            
       },
+      "compileOnSave": true,
       "include": ["./src"],
       "exclude": ["node_modules"],
       "ts-node":{
