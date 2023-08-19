@@ -1,0 +1,30 @@
+{
+      "compilerOptions": {
+            "target": "ESNext",
+            "module":"ESNext",
+            "checkJs": true,
+            "declaration":true,
+            "outDir" : "./dist/",
+            "rootDir": "./",
+            "strict":true,
+            "moduleResolution": "node",
+            "noFallthroughCasesInSwitch": true,
+            "allowSyntheticDefaultImports": true,
+            "esModuleInterop": true,
+            "skipLibCheck": true,
+            "forceConsistentCasingInFileNames": true,
+            "downlevelIteration": true,
+            "isolatedModules": true,
+            "noImplicitAny": true,
+            "useUnknownInCatchVariables": false,
+            "inlineSourceMap": true
+      },
+      "include": ["./src"],
+      "exclude": ["node_modules"],
+      "ts-node":{
+            "esm": true,
+            "experimentalSpecifierResolution": "node"
+      },
+      "topLevelAwait": true,
+      "lib": ["esnext"]
+}

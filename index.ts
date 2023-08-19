@@ -4,10 +4,10 @@ import cors from "cors";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import http from "http";
-import { typeDefs } from "./Schema.js";
-import { resolvers } from "./resolvers/index.js";
-import Pool from "./config/index.js";
-import models from "./models/index.js";
+import { typeDefs } from "./src/Schema.js";
+import { resolvers } from "./src/resolvers";
+import Pool from "./src/config";
+import models from "./src/models";
 
 const port = 3002;
 
@@ -38,5 +38,6 @@ app.use(
 );
 
 
-await new Promise((resolve) => httpServer.listen({ port: port }, resolve));
+// @ts-ignore
+await new Promise((resolve:any) => httpServer.listen({ port: port }, resolve));
 console.log(`Server running on port http://localhost:${port}/api`);

@@ -15,8 +15,11 @@ export const typeDefs = `#graphql
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     books: [Book]!
+    oneBook(id:String!): Book
   }
 
+  # The "Mutation" type is special: it lists all of the available queries that
+  # clients can execute, along with the return type for each.
   type Mutation{
     addBook(title: String, author: String, store:String): Book
     deleteBook(id:String): Boolean
