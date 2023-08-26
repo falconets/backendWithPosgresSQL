@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import {ApolloServerPluginLandingPageLocalDefault} from '@apollo/server/plugin/landingPage/default'
 import { expressMiddleware } from "@apollo/server/express4";
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import http from "http";
@@ -20,23 +21,25 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const server = new ApolloServer({
   schema,
+  csrfPrevention: true,
   cache:"bounded",
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
+    ApolloServerPluginLandingPageLocalDefault({ embed: true })
   ],
 });
 
 server.start().then(()=>{
   app.use(
     "/api",
-    cors(),
+    cors<cors.CorsRequest>(),
     bodyParser.json(),
     bodyParser.urlencoded({
       extended: true,
     }),
     expressMiddleware(server, {
       context: async ({ req }) => {
-        token: req.headers.token;
+        //const token = req.headers.token;
         const db = Pool;
         return { db, models };
       },
@@ -47,7 +50,7 @@ server.start().then(()=>{
 
 
 
-httpServer.listen(port,() => {
+httpServer.listen({port: port},() => {
   console.log(`Server running on http://localhost:${port}/api`);
 });
 
