@@ -22,6 +22,7 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({
   schema,
   csrfPrevention: true,
+  introspection: true,
   cache:"bounded",
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
