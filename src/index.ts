@@ -2,7 +2,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { ApolloServer } from "@apollo/server";
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from "@apollo/server/express4";
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import http from "http";
 import { typeDefs } from "./Schema.js";
 import { resolvers } from "./resolvers";
@@ -14,9 +16,14 @@ const port = process.env.PORT || 3000;
 const app = express();
 const httpServer = http.createServer(app);
 
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
+  cache:"bounded",
+  plugins: [
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+  ],
 });
 
 server.start().then(()=>{
@@ -40,7 +47,7 @@ server.start().then(()=>{
 
 
 
-httpServer.listen(port, () => {
+httpServer.listen(port,() => {
   console.log(`Server running on http://localhost:${port}/api`);
 });
 
