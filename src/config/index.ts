@@ -9,7 +9,9 @@ const connectionString = `postgresql://${process.env.PGUSER}:${process.env.PGPAS
 
 const Pool = new Pg.Pool({
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  ssl: isProduction
+  ssl: {
+    rejectUnauthorized: false //when deploying make to true for production
+  }
 })
 
 Pool.on('error', (err) => {
