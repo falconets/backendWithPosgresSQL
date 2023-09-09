@@ -7,12 +7,15 @@ import {ApolloServerPluginLandingPageLocalDefault} from '@apollo/server/plugin/l
 import { expressMiddleware } from "@apollo/server/express4";
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import http from "http";
+import jwt from "jsonwebtoken"
 import { typeDefs } from "./Schema.js";
 import { resolvers } from "./resolvers";
 import Pool from "./config";
 import models from "./models";
 
 const port = process.env.PORT || 3000;
+const JWT_SECRETE:any = process.env.JWT_SECRETE
+
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -34,15 +37,25 @@ server.start().then(()=>{
   app.use(
     "/api",
     cors<cors.CorsRequest>(),
-    bodyParser.json(),
+    bodyParser.json({limit:'100kb'}),
     bodyParser.urlencoded({
       extended: true,
+      limit: '100kb',
     }),
     expressMiddleware(server, {
       context: async ({ req }) => {
-        //const token = req.headers.token;
+        const token = req.headers.authorization || '';
+        let user = null
+
+        try{
+          if(token){
+            user = jwt.verify(token, JWT_SECRETE)
+          }
+        }catch(error){
+          throw new Error("Invalid token")
+        }
         const db = Pool;
-        return { db, models };
+        return { db, models, user};
       },
     })
   );

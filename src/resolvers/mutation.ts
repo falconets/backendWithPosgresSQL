@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql"
-import { Book, Context } from '../type'
+import { Book, Context, Company } from '../type'
 
 export const Mutation = {
       addBook: async (parent:Book['parent'], args:Book['args'], { db, models }:Context)=>{
@@ -24,6 +24,15 @@ export const Mutation = {
                   return update.rows[0]
             }catch(error){
                   throw new GraphQLError("Failed to updated the data")
+            }
+      },
+      registerCompany:async(parent:Company['parent'], args:Company['args'], { db, models }:Context)=>{
+            try{
+                  const register = await db.query(models.company.registerCompany(args))
+                  return register.rows[0]
+            }catch(err){
+                  console.error("here is the error!", err)
+                  throw new GraphQLError("Failed to register the company")
             }
       }
 }

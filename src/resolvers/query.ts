@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql';
-import { Book, Context } from '../type'
+import { Book, Context, Company } from '../type'
 
 
 export const Query = {
@@ -13,6 +13,14 @@ export const Query = {
       return result.rows[0]
     }catch(error){
       throw new GraphQLError("The book not found!")
+    }
+  },
+  allCompanies: async (parent:Company['parent'], args:Company['args'], { db, models}:Context)=>{
+    try{
+      const companies = await db.query(models.company.allCompanies())
+      return companies.rows.slice(0,99)
+    }catch(err){
+      throw new GraphQLError("Failed to return the Companies...")
     }
   }
 };
