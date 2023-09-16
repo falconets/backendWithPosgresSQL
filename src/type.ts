@@ -30,6 +30,23 @@ export type Company = {
   args: CompanyProps
 }
 
+export interface UserProps{
+    id?: string,
+    first_name?: string,
+    last_name?: string,
+    email?: string,
+    type: string,
+    gender: string,
+    password: string,
+    created_at?: string,
+    updated_at?: string,
+    bus_company_id?: number
+}
+
+export type User ={
+  parent:any;
+  args:UserProps ;
+}
 
 export type Context = {
   db: Pool

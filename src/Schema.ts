@@ -23,6 +23,20 @@ export const typeDefs = `#graphql
     bank_details: String
   }
 
+  #The data type for user for this company
+  type users{
+    id: ID!
+    first_name: String!
+    last_name: String!
+    email: String!
+    type: String!
+    gender: String!
+    password:String
+    created_at: DateTime
+    updated_at: DateTime
+    bus_company_id: Int
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -32,6 +46,9 @@ export const typeDefs = `#graphql
 
     #Company queries
     allCompanies: [Company]!
+
+    #Users queiries
+    allusers:[users!]!
   }
 
   # The "Mutation" type is special: it lists all of the available queries that
@@ -44,5 +61,10 @@ export const typeDefs = `#graphql
     #Company mutation
     registerCompany(company_name: String!, phone_number:String!, email: String!, 
         physical_address: String!, province: String!, bank_details:String!):Company
+
+
+    #users mutations
+    registerUser(first_name: String!,last_name: String!,email: String!,password:String!,bus_company_id:String): String!
+    signIn(email:String!, type:String, gender:String!, password: String!): String!
   }
 `;
