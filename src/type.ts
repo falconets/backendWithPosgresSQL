@@ -45,11 +45,15 @@ export interface UserProps{
 
 export type User ={
   parent:any;
-  args:UserProps ;
+  args:UserProps;
 }
 
 export type Context = {
   db: Pool
   models: typeof models
+  user: any
 };
 
+export interface tokenProp{
+  token :string | null ,
+}

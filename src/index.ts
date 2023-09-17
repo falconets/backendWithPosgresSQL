@@ -7,14 +7,13 @@ import {ApolloServerPluginLandingPageLocalDefault} from '@apollo/server/plugin/l
 import { expressMiddleware } from "@apollo/server/express4";
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import http from "http";
-import jwt from "jsonwebtoken"
 import { typeDefs } from "./Schema.js";
 import { resolvers } from "./resolvers";
 import Pool from "./config";
 import models from "./models";
+import { verifyToken } from "./utils/VerifyToken.js";
 
 const port = process.env.PORT || 3000;
-const JWT_SECRETE:any = process.env.JWT_SECRETE
 
 
 const app = express();
@@ -45,15 +44,8 @@ server.start().then(()=>{
     expressMiddleware(server, {
       context: async ({ req }) => {
         const token = req.headers.authorization || '';
-        let user = null
+        const user = verifyToken({token:token})
 
-        try{
-          if(token){
-            user = jwt.verify(token, JWT_SECRETE)
-          }
-        }catch(error){
-          throw new Error("Invalid token")
-        }
         const db = Pool;
         return { db, models, user};
       },

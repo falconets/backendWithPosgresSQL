@@ -1,5 +1,5 @@
 import { Query } from "./query";
-import { Mutation } from "./mutation";
+import { Mutation } from "./Mutations";
 import { resolverMap } from "./Date";
 
 export const resolvers = {

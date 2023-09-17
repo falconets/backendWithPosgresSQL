@@ -1,4 +1,3 @@
-
 export const typeDefs = `#graphql
   scalar DateTime
 
@@ -34,7 +33,8 @@ export const typeDefs = `#graphql
     password:String
     created_at: DateTime
     updated_at: DateTime
-    bus_company_id: Int
+    bus_company_id: Int,
+    is_email_verified: Boolean
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -64,7 +64,7 @@ export const typeDefs = `#graphql
 
 
     #users mutations
-    registerUser(first_name: String!,last_name: String!,email: String!,password:String!,bus_company_id:String): String!
-    signIn(email:String!, type:String, gender:String!, password: String!): String!
+    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!,password:String!,bus_company_id:String): String!
+    signIn(email:String!, password: String!): String!
   }
 `;
