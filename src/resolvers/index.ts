@@ -1,4 +1,4 @@
-import { Query } from "./query";
+import { Query } from "./Queries";
 import { Mutation } from "./Mutations";
 import { resolverMap } from "./Date";
 

@@ -6,7 +6,7 @@ import { CompanyProps } from "../type";
  * @returns list of companies
  */
 const allCompanies = () => {
-  return "SELECT * FROM bus_company";
+  return "SELECT * FROM bus_company;";
 };
 
 

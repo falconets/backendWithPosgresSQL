@@ -19,7 +19,7 @@
             "inlineSourceMap": false,
             "noUnusedLocals": true,
             "sourceMap": true,
-            "types":["node"],
+            "types":["node", "jest"],
             "allowJs": true,
             
       },

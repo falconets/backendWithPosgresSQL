@@ -9,6 +9,14 @@ export const typeDefs = `#graphql
     store:String
   }
 
+  type Buses{
+    bus_id:ID
+    bus_model: String
+    plate_number: String
+    seat_capacity: Int
+    bus_company:Int
+  }
+
   # The is company data specification
   type Company{
     companyid: ID!
@@ -48,7 +56,12 @@ export const typeDefs = `#graphql
     allCompanies: [Company]!
 
     #Users queiries
-    allusers:[users!]!
+    allusers:[users]!
+
+    #Buses queries
+    allBuses:[Buses!],
+    busesByCompany(bus_company:Int!):[Buses]
+
   }
 
   # The "Mutation" type is special: it lists all of the available queries that
@@ -66,5 +79,11 @@ export const typeDefs = `#graphql
     #users mutations
     registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!,password:String!,bus_company_id:String): String!
     signIn(email:String!, password: String!): String!
+
+
+    #buses mutations
+    createBus(bus_model:String!,plate_number:String!,seat_capacity:Int!, bus_company:Int!): Buses
+    deleteBus(bus_id:Int!): Boolean
+    updateBus(bus_model:String!,plate_number:String!,seat_capacity:Int!, bus_company:Int!, bus_id:Int): Buses
   }
 `;

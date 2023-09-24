@@ -57,3 +57,16 @@ export type Context = {
 export interface tokenProp{
   token :string | null ,
 }
+
+export interface busesProp{
+  bus_id?:string,
+  bus_model?:string,
+  plate_number?:string,
+  seat_capacity?: number,
+  bus_company?:number,
+}
+
+export type Buses = {
+  parent:any,
+  args: busesProp
+}
