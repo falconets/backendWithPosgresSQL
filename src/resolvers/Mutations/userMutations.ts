@@ -30,7 +30,7 @@ export const userMutations = {
 
         return `${jwt.sign(payload, JWT_SECRETE)} ${register.rows[0].id}`;
       } else {
-        throw new GraphQLError("Error registering the user!");
+        return 'Failed to register user, email already registered!';
       }
     } catch (err) {
       throw new GraphQLError("Failed to register the user");
@@ -64,12 +64,24 @@ export const userMutations = {
 
         return `${jwt.sign(payload, JWT_SECRETE)} ${checkEmail.rows[0].id}`;
       } else {
-            console.log("second error catch")
         throw new GraphQLError("Error signing in!!");
       }
     } catch (error) {
-      console.log(error);
       throw new GraphQLError("Invalid credentials!!");
     }
   },
+  removeUser:async (
+    parent: User["parent"],
+    args: User["args"],
+    { db, models }: Context
+  ) => {
+    try{
+      const user = await db.query(models.users.removeUser(args))
+      if(user.rowCount > 0)return true
+            else return false
+
+    }catch(error){
+      throw new GraphQLError("Error removing user")
+    }
+  }
 };

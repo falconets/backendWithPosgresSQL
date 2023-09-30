@@ -35,6 +35,7 @@ export interface UserProps{
     first_name?: string,
     last_name?: string,
     email?: string,
+    phone_number?: string,
     type: string,
     gender: string,
     password: string,

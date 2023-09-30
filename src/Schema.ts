@@ -36,6 +36,7 @@ export const typeDefs = `#graphql
     first_name: String!
     last_name: String!
     email: String!
+    phone_number: String
     type: String!
     gender: String!
     password:String
@@ -57,6 +58,7 @@ export const typeDefs = `#graphql
 
     #Users queiries
     allusers:[users]!
+    companyUsers(bus_company_id:Int!): [users]!
 
     #Buses queries
     allBuses:[Buses!],
@@ -77,8 +79,9 @@ export const typeDefs = `#graphql
 
 
     #users mutations
-    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!,password:String!,bus_company_id:String): String!
+    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!, phone_number:String,password:String!,bus_company_id:String): String!
     signIn(email:String!, password: String!): String!
+    removeUser(id:String!): Boolean
 
 
     #buses mutations

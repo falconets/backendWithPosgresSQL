@@ -23,7 +23,6 @@ export const busesMutation = {
     ) => {
       try {
             const del = await db.query(models.buses.deleteBus(args))
-            console.log(del)
             if(del.rowCount > 0)return true
             else return false
       }catch(error){
