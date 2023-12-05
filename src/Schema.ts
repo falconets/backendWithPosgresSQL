@@ -28,6 +28,7 @@ export const typeDefs = `#graphql
     created_at: DateTime
     updated_at:DateTime
     bank_details: String
+    logo: String
   }
 
   #The data type for user for this company
@@ -44,6 +45,27 @@ export const typeDefs = `#graphql
     updated_at: DateTime
     bus_company_id: Int,
     is_email_verified: Boolean
+    avatar: String
+  }
+
+  type Tickets{
+    saleId: ID!
+    customerId: String!
+    busId: String!
+    routeId: String!
+    saleAmount: String!
+    saleDateTime: DateTime
+    status: String!
+  }
+
+  type Payments{
+    id: ID!
+    saleId: ID!
+    paymentAmount: String!
+    dateTime: DateTime
+    paymentMethod: String!
+    bus_company: String
+    status: String!
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -56,14 +78,25 @@ export const typeDefs = `#graphql
     #Company queries
     allCompanies: [Company]!
 
-    #Users queiries
+    #Users queries
     allusers:[users]!
     companyUsers(bus_company_id:Int!): [users]!
+    userById(id:Int): users
 
     #Buses queries
     allBuses:[Buses!],
     busesByCompany(bus_company:Int!):[Buses]
 
+    #Ticket queries
+    allTickets: [Tickets!]
+    ticketById(saleId:ID!): Tickets
+    ticketsByBusAndRoute(busId:String!,routeId:String!):[Tickets]
+
+    #Payments queries
+    allpayments:[Payments!]
+    paymentsById(id:ID!): Payments
+    paymentsByCompany(bus_company:String!): Payments
+    
   }
 
   # The "Mutation" type is special: it lists all of the available queries that
@@ -75,12 +108,13 @@ export const typeDefs = `#graphql
 
     #Company mutation
     registerCompany(company_name: String!, phone_number:String!, email: String!, 
-        physical_address: String!, province: String!, bank_details:String!):Company
+        physical_address: String!, province: String!, bank_details:String!, logo: String):Company
 
 
     #users mutations
-    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!, phone_number:String,password:String!,bus_company_id:String): String!
+    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!, phone_number:String,password:String!,bus_company_id:String, avatar: String): String!
     signIn(email:String!, password: String!): String!
+    updateUser(id:Int!, email:String, type:String, first_name:String, last_name:String, phone_number:String, avatar:String, is_email_verified: Boolean): users
     removeUser(id:String!): Boolean
 
 
@@ -88,5 +122,15 @@ export const typeDefs = `#graphql
     createBus(bus_model:String!,plate_number:String!,seat_capacity:Int!, bus_company:Int!): Buses
     deleteBus(bus_id:Int!): Boolean
     updateBus(bus_model:String!,plate_number:String!,seat_capacity:Int!, bus_company:Int!, bus_id:Int): Buses
+
+    #tickets mutations
+    bookTicket(customerId: String!, busId: String!, routeId: String!, saleAmount: String!, status: String): Tickets
+    updateTicket(busId:String, routeId: String!, saleAmount: String!, status: String): Tickets
+    removeTicket(saleId:ID!): Boolean
+
+    #Payments mutations
+    makePayment(saleId: String!, paymentAmount: String!, paymentMethod: String!, bus_company: String, status: String!): Payments
+    updatePayment(status: String, paymentAmount: String!, paymentMethod: String!): Payments
+    removePayment(paymentId: ID!):Boolean
   }
 `;

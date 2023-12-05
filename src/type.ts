@@ -23,6 +23,7 @@ export interface CompanyProps{
     created_at?: string,
     updated_at?: string,
     bank_details?: string
+    logo?: string
   }
 
 export type Company = {
@@ -31,7 +32,7 @@ export type Company = {
 }
 
 export interface UserProps{
-    id?: string,
+    id?: number,
     first_name?: string,
     last_name?: string,
     email?: string,
@@ -42,6 +43,8 @@ export interface UserProps{
     created_at?: string,
     updated_at?: string,
     bus_company_id?: number
+    avatar?: string
+    is_email_verified?: boolean
 }
 
 export type User ={
@@ -71,3 +74,33 @@ export type Buses = {
   parent:any,
   args: busesProp
 }
+
+export interface TicketsProps{
+  saleId: string,
+  customerId: string,
+  busId: string,
+  routeId: string,
+  saleAmount: string,
+  saleDateTime: string
+}
+
+export type Tickets = {
+  parent:any,
+  args: TicketsProps
+}
+
+export interface PaymentsProps{
+  id: string,
+  saleId: string,
+  paymentAmount: string,
+  dateTime: string,
+  paymentMethod: string,
+  bus_company?: string,
+  status: string,
+}
+
+export type Payments = {
+  parent:any,
+  args: PaymentsProps
+}
+

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { GraphQLError } from "graphql";
-import { User, Context } from "../../type";
+import { User, Context, UserProps } from "../../type";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -30,7 +30,7 @@ export const userMutations = {
 
         return `${jwt.sign(payload, JWT_SECRETE)} ${register.rows[0].id}`;
       } else {
-        return 'Failed to register user, email already registered!';
+        return "Failed to register user, email already registered!";
       }
     } catch (err) {
       throw new GraphQLError("Failed to register the user");
@@ -45,12 +45,12 @@ export const userMutations = {
       const checkEmail = await db.query(models.users.checkUser(args));
       if (checkEmail?.rows.length >= 1 && JWT_SECRETE !== undefined) {
         const valid = await bcrypt.compare(
-              args.password,
-              checkEmail.rows[0].password
+          args.password,
+          checkEmail.rows[0].password
         );
         if (!valid) {
-            console.log('valid', valid)
-            throw new GraphQLError("Error signing in!");
+          console.log("valid", valid);
+          throw new GraphQLError("Error signing in!");
         }
 
         const expiresInDays = 1;
@@ -70,18 +70,31 @@ export const userMutations = {
       throw new GraphQLError("Invalid credentials!!");
     }
   },
-  removeUser:async (
+  removeUser: async (
     parent: User["parent"],
     args: User["args"],
     { db, models }: Context
   ) => {
-    try{
-      const user = await db.query(models.users.removeUser(args))
-      if(user.rowCount > 0)return true
-            else return false
-
-    }catch(error){
-      throw new GraphQLError("Error removing user")
+    try {
+      const user = await db.query(models.users.removeUser(args));
+      if (user.rowCount > 0) return true;
+      else return false;
+    } catch (error) {
+      throw new GraphQLError("Error removing user");
     }
-  }
+  },
+  updateUser: async (
+    parent: User["parent"],
+    args: User["args"],
+    { db, models }: Context
+  ): Promise<boolean> => {
+    try {
+      const user = await db.query(models.users.updateUser(args));
+      if(user.rowCount >= 0)return true;
+      else return false
+    } catch (error) {
+      throw new GraphQLError("Error updating user");
+
+    }
+  },
 };
