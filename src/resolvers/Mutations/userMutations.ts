@@ -77,7 +77,7 @@ export const userMutations = {
   ) => {
     try {
       const user = await db.query(models.users.removeUser(args));
-      if (user.rowCount > 0) return true;
+      if (user.rowCount && user.rowCount > 0) return true;
       else return false;
     } catch (error) {
       throw new GraphQLError("Error removing user");
@@ -90,7 +90,7 @@ export const userMutations = {
   ): Promise<boolean> => {
     try {
       const user = await db.query(models.users.updateUser(args));
-      if(user.rowCount >= 0)return true;
+      if(user.rowCount && user.rowCount >= 0)return true;
       else return false
     } catch (error) {
       throw new GraphQLError("Error updating user");

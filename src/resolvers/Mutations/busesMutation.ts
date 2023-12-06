@@ -23,7 +23,7 @@ export const busesMutation = {
     ) => {
       try {
             const del = await db.query(models.buses.deleteBus(args))
-            if(del.rowCount > 0)return true
+            if(del.rowCount && del.rowCount > 0)return true
             else return false
       }catch(error){
             throw new GraphQLError('Something went wrong!!!')
