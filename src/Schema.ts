@@ -68,6 +68,32 @@ export const typeDefs = `#graphql
     status: String!
   }
 
+  type BusRoutes{
+    id: ID!
+    companyId: Int!
+    routeName: String
+    distanceInKm: Int
+    durationInHours: Int
+    startLocation: String
+    endLocation: String
+    active: Boolean
+    price: Int
+  }
+
+  type BusStops{
+    id: ID!
+    stopName: String
+    latitude: String
+    longitude: String
+    description: String
+  }
+
+  type BusRoutesStops{
+    routeId: String
+    stopId: String
+    stopOrder: Int
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -96,6 +122,11 @@ export const typeDefs = `#graphql
     allpayments:[Payments!]
     paymentsById(id:ID!): Payments
     paymentsByCompany(bus_company:String!): Payments
+
+    #Routes queries
+    getBusRoutes: [BusRoutes]
+    getBusStops: [BusStops]
+    getBusRoutesStops: [BusRoutesStops]
     
   }
 

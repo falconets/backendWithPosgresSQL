@@ -103,3 +103,44 @@ export type Payments = {
   parent: any;
   args: PaymentsProps;
 };
+
+export interface BusRoutesProps{
+  id?: string;
+  companyId: number
+  routeName: string
+  distanceInKm: number
+  durationInHours: number
+  startLocation: string
+  endLocation: string
+  active: boolean
+  price: number
+}
+
+export type BusRoutes = {
+  parent:any,
+  args: BusRoutesProps
+}
+
+export interface BusStopProps{
+ id?: string,
+ stopName: string,
+ latitude: string,
+ longitude: string,
+ description: string
+}
+
+export type BusStops = {
+  parent:any,
+  args: BusStopProps
+}
+
+export interface BusRoutesStopProps{
+  routeId:string,
+  stopId:string,
+  stopOrder: number
+}
+
+export type BusRoutesStops = {
+  parent:any,
+  args: BusRoutesStops
+}

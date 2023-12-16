@@ -1,4 +1,4 @@
-import { BookProps } from "../type"
+import { BookProps } from "@types"
 
 const allBooks = ()=>{
       return "SELECT * FROM books"

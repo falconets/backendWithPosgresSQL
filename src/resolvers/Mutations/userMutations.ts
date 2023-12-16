@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { GraphQLError } from "graphql";
-import { User, Context} from "../../type";
+import { User, Context} from "@types";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 

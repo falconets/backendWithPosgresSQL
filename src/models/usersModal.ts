@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { UserProps } from "../type";
+import { UserProps } from "@types";
 
 const registerUser = async(s:UserProps):Promise<string>=>{
       const hashed = await bcrypt.hash(s.password, 10)

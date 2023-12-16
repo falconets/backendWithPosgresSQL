@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { Context, User, UserProps } from "../../type";
+import { Context, User, UserProps } from "@types";
 
 const userQuery = {
   allusers: async (

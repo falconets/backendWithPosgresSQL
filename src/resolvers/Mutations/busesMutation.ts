@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { Buses, Context } from "../../type";
+import { Buses, Context } from "@types";
 
 export const busesMutation = {
   createBus: async (

@@ -1,11 +1,13 @@
 import bookQuery from "./bookQuery"
-import companyQuery from "./companyQuery"
-import busesQuery from "./busesQuery"
 import userQuery from "./userQuery"
+import BusesQueries from "./BusesQueries"
+import RouteQueries from "./RouteQueries"
+import CompanyQuries from "./CompanyQuries"
 
 export const Query = {
       ...bookQuery,
-      ...companyQuery,
-      ...busesQuery,
       ...userQuery,
+      ...BusesQueries,
+      ...RouteQueries,
+      ...CompanyQuries,
 }

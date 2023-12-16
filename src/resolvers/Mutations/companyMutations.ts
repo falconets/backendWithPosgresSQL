@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { Company, Context } from "../../type";
+import { Company, Context } from "@types";
 
 export const companyMutations = {
   registerCompany: async (parent:Company['parent'], args:Company['args'], { db, models }:Context) => {

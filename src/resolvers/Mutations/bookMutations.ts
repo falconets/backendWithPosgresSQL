@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { Book, Context } from "../../type";
+import { Book, Context } from "@types";
 
 export const bookMutations = {
   addBook: async (

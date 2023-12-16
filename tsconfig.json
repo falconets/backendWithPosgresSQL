@@ -21,6 +21,11 @@
             "sourceMap": true,
             "types":["node", "jest"],
             "allowJs": true,
+            "baseUrl": "./src",
+            "paths": {
+                  "@types": ["type"],
+                  "@tables": ["tables"],
+            }
             
       },
       "compileOnSave": true,

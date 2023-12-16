@@ -1,4 +1,4 @@
-import { busesProp } from "../type"
+import { busesProp } from "@types"
 
 /**
  * 

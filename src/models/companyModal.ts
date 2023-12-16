@@ -1,4 +1,4 @@
-import { CompanyProps } from "../type";
+import { CompanyProps } from "@types";
 
 /**
  * this function return a list of all available company companies 

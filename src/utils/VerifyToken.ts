@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { tokenProp } from "../type"
+import { tokenProp } from "@types"
 import jwt from "jsonwebtoken"
 
 dotenv.config()
