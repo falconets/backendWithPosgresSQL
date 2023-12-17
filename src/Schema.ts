@@ -78,6 +78,8 @@ export const typeDefs = `#graphql
     endLocation: String
     active: Boolean
     price: Int
+    createdAt: DateTime
+    updatedAt: DateTime
   }
 
   type BusStops{
@@ -86,12 +88,16 @@ export const typeDefs = `#graphql
     latitude: String
     longitude: String
     description: String
+    createdAt: DateTime
+    updatedAt: DateTime
   }
 
   type BusRoutesStops{
     routeId: String
     stopId: String
     stopOrder: Int
+    createdAt: DateTime
+    updatedAt: DateTime
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -128,6 +134,7 @@ export const typeDefs = `#graphql
     getBusStops: [BusStops]
     getBusRoutesStops: [BusRoutesStops]
     
+    
   }
 
   # The "Mutation" type is special: it lists all of the available queries that
@@ -163,5 +170,17 @@ export const typeDefs = `#graphql
     makePayment(saleId: String!, paymentAmount: String!, paymentMethod: String!, bus_company: String, status: String!): Payments
     updatePayment(status: String, paymentAmount: String!, paymentMethod: String!): Payments
     removePayment(paymentId: ID!):Boolean
+
+
+    #Routes mutations
+    addBusRoutes(companyId: Int!, routeName: String, distanceInKm: Int,
+      durationInHours: Int, startLocation: String,  endLocation: String,
+      active: Boolean, price: Int): BusRoutes
+
+    addBusStops(stopName: String!, latitude: String, longitude: String,
+      description: String): BusStops  
+
+    addBusRoutesStops(routeId: String, stopId: String, stopOrder: Int): BusRoutesStops
+    
   }
 `;

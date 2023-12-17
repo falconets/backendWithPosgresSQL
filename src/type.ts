@@ -114,6 +114,8 @@ export interface BusRoutesProps{
   endLocation: string
   active: boolean
   price: number
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type BusRoutes = {
@@ -126,7 +128,9 @@ export interface BusStopProps{
  stopName: string,
  latitude: string,
  longitude: string,
- description: string
+ description: string,
+ createdAt?: string
+ updatedAt?: string
 }
 
 export type BusStops = {
@@ -138,6 +142,8 @@ export interface BusRoutesStopProps{
   routeId:string,
   stopId:string,
   stopOrder: number
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type BusRoutesStops = {

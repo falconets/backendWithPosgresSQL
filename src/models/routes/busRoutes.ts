@@ -9,14 +9,13 @@ const addBusRoutes = (s: BusRoutesProps) => {
       ("companyId", "routeName", "distanceInKm", "durationInHours", 
       "startLocation", "endLocation", active, price)
             VALUES (${s.companyId}, '${s.routeName}', ${s.distanceInKm}, ${s.durationInHours}, 
-            '${s.startLocation}', '${s.endLocation}', '${s.active}', ${s.price});`;
+            '${s.startLocation}', '${s.endLocation}', '${s.active}', ${s.price}) RETURNING *;`;
 };
 
 const getBusRoutes = () => {
-  return `SELECT id, "companyId", "routeName", "distanceInKm",
-            "startLocation", "endLocation", active, price,"createdAt", "updatedAt"
-            FROM ${table}`;
+  return `SELECT * FROM ${table}`;
 };
+
 
 export default {
   addBusRoutes,
