@@ -1,5 +1,6 @@
 export const typeDefs = `#graphql
   scalar DateTime
+  scalar Upload
 
   # This "Book" type defines the queryable fields for every book in our data source.
   type Book {
@@ -150,7 +151,9 @@ export const typeDefs = `#graphql
 
 
     #users mutations
-    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!, email: String!, phone_number:String,password:String!,bus_company_id:String, avatar: String): String!
+    registerUser(first_name: String!,last_name: String!,type: String!, gender: String!,
+       email: String!, phone_number:String,password:String!,bus_company_id:String,
+       avatar: String, is_email_verified: Boolean!): String!
     signIn(email:String!, password: String!): String!
     updateUser(id:Int!, email:String, type:String, first_name:String, last_name:String, phone_number:String, avatar:String, is_email_verified: Boolean): users
     removeUser(id:String!): Boolean

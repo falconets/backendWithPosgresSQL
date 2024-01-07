@@ -8,7 +8,6 @@ export const getBusRoutes = async (
 ): Promise<BusRoutesProps[]> => {
   try {
     const routes = await db.query(models.routes.getBusRoutes());
-    console.log(routes)
     return routes.rows;
   } catch (error) {
     throw new GraphQLError("Failed to retrieve the bus routes!");

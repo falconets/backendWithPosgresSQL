@@ -15,26 +15,31 @@ export const userMutations = {
   ) => {
     try {
       const checkUser = await db.query(models.users.checkUser(args));
-      if (checkUser?.rows.length < 1 && JWT_SECRETE !== undefined) {
+      console.log(checkUser.rowCount);
+      console.log("args", args)
+    
+      if (checkUser.rowCount === 0 && typeof JWT_SECRETE !== 'undefined') {
         const register = await db.query(await models.users.registerUser(args));
         console.log(register);
-
+    
         const expiresInMinutes = 15;
-        const expirationTime =
-          Math.floor(Date.now() / 1000) + expiresInMinutes * 60;
-
+        const expirationTime = Math.floor(Date.now() / 1000) + expiresInMinutes * 60;
+    
         const payload = {
           userId: register.rows[0].id,
           exp: expirationTime,
         };
-
-        return `${jwt.sign(payload, JWT_SECRETE)} ${register.rows[0].id}`;
+    
+        const token = jwt.sign(payload, JWT_SECRETE);
+        return `${token} ${register.rows[0].id}`;
       } else {
         return "Failed to register user, email already registered!";
       }
     } catch (err) {
+      console.log(err)
       throw new GraphQLError("Failed to register the user");
     }
+    
   },
   signIn: async (
     parent: User["parent"],
@@ -42,6 +47,7 @@ export const userMutations = {
     { db, models }: Context
   ) => {
     try {
+      console.log(args)
       const checkEmail = await db.query(models.users.checkUser(args));
       if (checkEmail?.rows.length >= 1 && JWT_SECRETE !== undefined) {
         const valid = await bcrypt.compare(

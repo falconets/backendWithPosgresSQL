@@ -1,12 +1,14 @@
 import bcrypt from "bcrypt";
 import { UserProps } from "@types";
 
-const registerUser = async(s:UserProps):Promise<string>=>{
+const registerUser = async(s:UserProps)=>{
       const hashed = await bcrypt.hash(s.password, 10)
+      const avatar = s.avatar? s.avatar : 'N/A'
+      console.log('avatar', avatar)
 
-      return `INSERT INTO users (first_name, last_name, email, phone_number, type, gender, password, bus_company_id, is_email_verified, avatar) 
+      return `INSERT INTO users (first_name, last_name, email, phone_number, type, gender, password, bus_company_id, avatar, is_email_verified) 
             VALUES ('${s.first_name}', '${s.last_name}', '${s.email}','${s.phone_number}','${s.type}', '${s.gender}', '${hashed}',
-            '${s.bus_company_id}', '${s.avatar}', 'false') RETURNING *;   `
+            '${s.bus_company_id}', '${avatar}', ${s.is_email_verified}) RETURNING *;   `
 }
 
 const checkUser = (s:UserProps):string=>{
