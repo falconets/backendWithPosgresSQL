@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import helmet from 'helmet'
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
@@ -40,12 +41,20 @@ const corsOptions = {
 server.start().then(() => {
   app.use(
     "/api",
+    helmet(),
     cors(corsOptions),
     bodyParser.json({ limit: "100kb" }),
     bodyParser.urlencoded({
       extended: true,
       limit: "100kb",
     }),
+    (req, res, next) => {
+      res.setHeader(
+        'Content-Security-Policy',
+        `default-src 'self'; script-src 'self' https://trusted-scripts.com 'nonce-${res.locals.nonce}'; style-src 'self' https://trusted-styles.com 'unsafe-inline'`
+      );
+      next();
+    },
     expressMiddleware(server, {
       context: async ({ req }) => {
         const token = req.headers.authorization || "";
