@@ -31,10 +31,16 @@ const server = new ApolloServer({
   ],
 });
 
+const corsOptions = {
+  origin: ['http://localhost:5073', 'https://hubadmin-production.up.railway.app'], // Set this to your trusted domains or '*' for any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 server.start().then(() => {
   app.use(
     "/api",
-    cors<cors.CorsRequest>(),
+    cors(corsOptions),
     bodyParser.json({ limit: "100kb" }),
     bodyParser.urlencoded({
       extended: true,
