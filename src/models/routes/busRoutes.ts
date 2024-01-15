@@ -12,6 +12,14 @@ const addBusRoutes = (s: BusRoutesProps) => {
             '${s.startLocation}', '${s.endLocation}', '${s.active}', ${s.price}) RETURNING *;`;
 };
 
+const toggleBusRoutesActive = (s:BusRoutesProps)=>{
+  return `UPDATE ${table} SET active='${s.active}' WHERE id='${s.id}'`;
+}
+
+const deleteBusRoutes = (s:BusRoutesProps)=>{
+  return `DELETE FROM ${table} WHERE id='${s.id}'`;
+}
+
 const getBusRoutes = () => {
   return `SELECT * FROM ${table}`;
 };
@@ -20,4 +28,6 @@ const getBusRoutes = () => {
 export default {
   addBusRoutes,
   getBusRoutes,
+  toggleBusRoutesActive,
+  deleteBusRoutes,
 };

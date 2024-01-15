@@ -184,6 +184,9 @@ export const typeDefs = `#graphql
       description: String): BusStops  
 
     addBusRoutesStops(routeId: String, stopId: String, stopOrder: Int): BusRoutesStops
+
+    toggleBusRoutesActive(id:String!, active: Boolean!): BusRoutes
+    deleteBusRoutes(id:String): Boolean
     
   }
 `;
