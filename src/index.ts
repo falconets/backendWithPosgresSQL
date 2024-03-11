@@ -59,7 +59,8 @@ server.start().then(() => {
       context: async ({ req }) => {
         const token = req.headers.authorization || "";
         const user = verifyToken({ token: token });
-
+        console.log('token', token)
+        console.log('user', user)
         const db = Pool;
         return { db, models, user };
       },

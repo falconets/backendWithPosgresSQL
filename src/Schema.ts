@@ -85,12 +85,14 @@ export const typeDefs = `#graphql
 
   type BusStops{
     id: ID!
+    companyid: Int
     stopName: String
     latitude: String
     longitude: String
     description: String
     createdAt: DateTime
     updatedAt: DateTime
+    route: BusRoutesStops
   }
 
   type BusRoutesStops{
@@ -132,8 +134,8 @@ export const typeDefs = `#graphql
 
     #Routes queries
     getBusRoutes: [BusRoutes]
-    getBusStops: [BusStops]
-    getBusRoutesStops: [BusRoutesStops]
+    getBusStops(companyid:String): [BusStops]
+    getBusRoutesStops(routeId:String!): [BusStops]
     
     
   }
@@ -179,14 +181,17 @@ export const typeDefs = `#graphql
     addBusRoutes(companyId: Int!, routeName: String, distanceInKm: Int,
       durationInHours: Int, startLocation: String,  endLocation: String,
       active: Boolean, price: Int): BusRoutes
+    toggleBusRoutesActive(id:String!, active: Boolean!): BusRoutes
+    deleteBusRoutes(id:String): Boolean
 
+    #Bus stops
     addBusStops(stopName: String!, latitude: String, longitude: String,
-      description: String): BusStops  
+      description: String, companyid: Int!, routeId: String!): BusRoutesStops! 
+    deleteBusStop(busStopId:String!): Boolean
+    updateBusStop(busStopId:String!,latitude:String, longitude: String, description: String): BusStops
 
     addBusRoutesStops(routeId: String, stopId: String, stopOrder: Int): BusRoutesStops
 
-    toggleBusRoutesActive(id:String!, active: Boolean!): BusRoutes
-    deleteBusRoutes(id:String): Boolean
     
   }
 `;

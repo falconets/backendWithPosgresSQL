@@ -7,7 +7,7 @@ export const getBusStops = async (
   { db, models, user }: Context
 ): Promise<BusStopProps[]> => {
   try {
-    const routes = await db.query(models.routes.getBusStop());
+    const routes = await db.query(models.routes.getBusStop(args));
     return routes.rows;
   } catch (error) {
     throw new GraphQLError("Failed to retrieve the bus routes!");

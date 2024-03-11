@@ -125,12 +125,15 @@ export type BusRoutes = {
 
 export interface BusStopProps{
  id?: string,
+ companyid: number,
  stopName: string,
  latitude: string,
  longitude: string,
+ routeId?: string,
  description: string,
  createdAt?: string
  updatedAt?: string
+ route?:BusRoutesStopProps,
 }
 
 export type BusStops = {
@@ -140,13 +143,14 @@ export type BusStops = {
 
 export interface BusRoutesStopProps{
   routeId:string,
-  stopId:string,
-  stopOrder: number
+  stopId?:string,
+  id?: string,
+  stopOrder?: number
   createdAt?: string
   updatedAt?: string
 }
 
 export type BusRoutesStops = {
   parent:any,
-  args: BusRoutesStops
+  args: BusRoutesStopProps
 }
