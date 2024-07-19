@@ -56,6 +56,7 @@ export type Context = {
   db: Pool;
   models: typeof models;
   user: any;
+  firestore: FirebaseFirestore.Firestore;
 };
 
 export interface tokenProp {
@@ -153,4 +154,18 @@ export interface BusRoutesStopProps{
 export type BusRoutesStops = {
   parent:any,
   args: BusRoutesStopProps
+}
+
+export type BusScheduleProps = {
+  company_id: number;
+  bus_id: number;
+  date: string; // Date string in YYYY-MM-DD format
+  time: string; // Time string in HH:MM format
+  route_id: string;
+  tickets: number;
+};
+
+export type BusSchedule = {
+  parent: any;
+  args: BusScheduleProps;
 }

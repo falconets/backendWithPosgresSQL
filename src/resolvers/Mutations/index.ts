@@ -9,5 +9,5 @@ export const Mutation = {
   ...companyMutations,
   ...userMutations,
   ...busesMutation,
-  ...RouteMutation
+  ...RouteMutation,
 };

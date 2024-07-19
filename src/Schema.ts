@@ -102,6 +102,16 @@ export const typeDefs = `#graphql
     createdAt: DateTime
     updatedAt: DateTime
   }
+  
+  tupe BusSchedules{
+    id: ID!
+    companyId: Int
+    busId: String
+    date: DateTime
+    time: String
+    routeId: String
+    tickets: Int
+  }
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -137,6 +147,13 @@ export const typeDefs = `#graphql
     getBusStops(companyid:String): [BusStops]
     getBusRoutesStops(routeId:String!): [BusStops]
     
+
+    #Schedules queries
+    getBusSchedules: [BusSchedules]
+   # getBusScheduleByDate(date: DateTime!): [BusSchedules]
+   # getBusScheduleByCompanyId(company_id:Int!): [BusSchedules]
+   # getBusScheduleByRouteId(route_id:String!): [BusSchedules]
+   # getScheduleByBusId(bus_id:String!): [BusSchedules]
     
   }
 
@@ -192,6 +209,12 @@ export const typeDefs = `#graphql
 
     addBusRoutesStops(routeId: String, stopId: String, stopOrder: Int): BusRoutesStops
 
+
+    #Schedules mutations
+    addBusSchedule(companyId: Int!, busId: String!, date: DateTime!, time: String!, routeId: String!): BusSchedules
+    deleteBusSchedule(id:String): Boolean
+    updateBusSchedule(id:String!, date: DateTime!, time: String!, routeId: String!): BusSchedules
+    updateBusScheduleTickets(id:String!, tickets:Int!): BusSchedules
     
   }
 `;

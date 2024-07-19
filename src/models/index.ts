@@ -3,6 +3,7 @@ import company from './companyModal'
 import users from './usersModal'
 import buses from './busModel'
 import routes from './routes'
+import schedules from './schedules'
 
 export default {
       Book,
@@ -10,4 +11,5 @@ export default {
       users,
       buses,
       routes,
+      schedules,
 }
