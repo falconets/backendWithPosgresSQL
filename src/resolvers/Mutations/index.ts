@@ -3,6 +3,7 @@ import { companyMutations } from "./companyMutations";
 import { userMutations } from "./userMutations";
 import { busesMutation } from "./busesMutation"
 import RouteMutation from "./RouteMutation";
+import BusScheduleMutation from "./BusScheduleMutation";
 
 export const Mutation = {
   ...bookMutations,
@@ -10,4 +11,5 @@ export const Mutation = {
   ...userMutations,
   ...busesMutation,
   ...RouteMutation,
+  ...BusScheduleMutation
 };

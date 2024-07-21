@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import models from "./models";
+import admin from "firebase-admin";
 
 export interface BookProps {
   title?: string;
@@ -157,9 +158,10 @@ export type BusRoutesStops = {
 }
 
 export type BusScheduleProps = {
+  id?: string;
   company_id: number;
   bus_id: number;
-  date: string; // Date string in YYYY-MM-DD format
+  date: admin.firestore.Timestamp | string; // Date string in YYYY-MM-DD format
   time: string; // Time string in HH:MM format
   route_id: string;
   tickets: number;

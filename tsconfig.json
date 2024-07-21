@@ -23,6 +23,7 @@
             "types":["node", "jest"],
             "allowJs": true,
             "baseUrl": "./src",
+            "rootDir": "./src",
             "paths": {
                   "@types": ["type"],
                   "@tables": ["tables"],

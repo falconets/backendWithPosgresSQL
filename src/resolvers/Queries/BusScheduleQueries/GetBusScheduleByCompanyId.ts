@@ -1,15 +1,18 @@
 import { BusSchedule, BusScheduleProps, Context } from "@types";
 import { GraphQLError } from "graphql";
 
-export const getBusSchedules = async (
+export const getBusScheduleByCompanyId = async (
   parent: BusSchedule["parent"],
   args: BusSchedule["args"],
   { models, firestore }: Context
 ): Promise<BusScheduleProps[]> => {
   try {
-    const res = await models.schedules.getBusSchedules(firestore);
+    const res = await models.schedules.getBusScheduleByCompanyId(
+      firestore,
+      args.company_id
+    );
     return res as BusScheduleProps[];
   } catch (error) {
-    throw new GraphQLError("Failed to return the bus schedule!");
+    throw new GraphQLError("Failed to return the bus schedule by comapany!");
   }
 };

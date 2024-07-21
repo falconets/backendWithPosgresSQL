@@ -103,7 +103,7 @@ export const typeDefs = `#graphql
     updatedAt: DateTime
   }
   
-  tupe BusSchedules{
+  type BusSchedules{
     id: ID!
     companyId: Int
     busId: String
@@ -121,7 +121,7 @@ export const typeDefs = `#graphql
     oneBook(id:String!): Book
 
     #Company queries
-    allCompanies: [Company]!
+    allCompanies: [Company]
 
     #Users queries
     allusers:[users]!
@@ -150,9 +150,9 @@ export const typeDefs = `#graphql
 
     #Schedules queries
     getBusSchedules: [BusSchedules]
-   # getBusScheduleByDate(date: DateTime!): [BusSchedules]
-   # getBusScheduleByCompanyId(company_id:Int!): [BusSchedules]
-   # getBusScheduleByRouteId(route_id:String!): [BusSchedules]
+    getBusScheduleByDate(date: DateTime!): [BusSchedules]
+    getBusScheduleByCompanyId(company_id:Int!): [BusSchedules]
+    getBusScheduleByRouteId(route_id:String!): [BusSchedules]
    # getScheduleByBusId(bus_id:String!): [BusSchedules]
     
   }
@@ -211,10 +211,9 @@ export const typeDefs = `#graphql
 
 
     #Schedules mutations
-    addBusSchedule(companyId: Int!, busId: String!, date: DateTime!, time: String!, routeId: String!): BusSchedules
+    addBusSchedule(companyId: Int!, busId: String!, date: DateTime!, time: String!, routeId: String!, tickets: Int!): BusSchedules
     deleteBusSchedule(id:String): Boolean
-    updateBusSchedule(id:String!, date: DateTime!, time: String!, routeId: String!): BusSchedules
-    updateBusScheduleTickets(id:String!, tickets:Int!): BusSchedules
+    updateBusSchedule(id:String!, date: DateTime, time: String, routeId: String, tickets: Int): BusSchedules
     
   }
 `;
