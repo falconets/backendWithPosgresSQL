@@ -4,12 +4,7 @@ export enum tracks {
   BUS_STOPS = "bus_stops",
   BUS_ROUTES_STOPS = "bus_routes_stops",
   BUSES = "buses",
-  PAYMENTS = "payments",
   REVIEWS = "reviews",
-  TICKET_SALES = "ticket_sales",
+  TICKETS = "tickets",
   USERS = "users",
 }
-
-export const nothing = {}
-
-

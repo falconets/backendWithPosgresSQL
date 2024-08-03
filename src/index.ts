@@ -61,7 +61,8 @@ server.start().then(() => {
         const user = verifyToken({ token: token });
         const db = data.Pool;
         const firestore = data.firestore;
-        return { db, models, user, firestore };
+        const mtn = data.mtn
+        return { db, models, user, firestore, mtn};
       },
     })
   );
