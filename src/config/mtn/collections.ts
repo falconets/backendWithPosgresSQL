@@ -67,7 +67,6 @@ export const requestToPay = async (
 ): Promise<boolean> => {
   const token = await getToken();
 
-  console.log("referenceId:", referenceId);
   try {
     const data = JSON.stringify(args);
     const response = await connection.post("v1_0/requesttopay", data, {
@@ -105,7 +104,6 @@ export const verifyAccountHolder = async (msisdn: string): Promise<boolean> => {
 
     return response.status === 200;
   } catch (error) {
-    console.error("Failed to verify:", error.message);
     return false;
   }
 };
@@ -129,7 +127,6 @@ export const requestToPayTransaction = async (
     });
 
     if (response.status === 200) {
-      console.log("Transaction status successful:", response.data);
       return response.data as requestToPayResponse;
     } else {
       throw new Error(
