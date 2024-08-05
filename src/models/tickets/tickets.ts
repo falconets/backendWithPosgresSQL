@@ -19,8 +19,8 @@ const addTicket = (arg: TicketProps) => {
     text: `INSERT INTO public.tickets (
             "ticketId", "companyId", "passengerName", "seatNumber", amount, "routeId",
             "passengerEmail", "paymentMethod", "financialTransactionId", "externalId", currency, "partyIdType",
-            "partyId", "payerMessage", "payeeNote", status, created_by, updated_by, "numberOfTickets"
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+            "partyId", "payerMessage", "payeeNote", status, created_by, updated_by, "numberOfTickets", "phone"
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
         RETURNING *;`,
     values: [
       uuid,
@@ -42,6 +42,7 @@ const addTicket = (arg: TicketProps) => {
       arg.created_by,
       arg.updated_by,
       arg.numberOfTickets,
+      arg.phone
     ],
   };
 };

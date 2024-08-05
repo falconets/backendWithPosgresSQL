@@ -54,6 +54,7 @@ export const typeDefs = `#graphql
    ticketId: ID!
    passengerName: String!
    seatNumber: String!
+   phone: String
    amount: Int! 
    numberOfTickets: Int
    createdAt: String
@@ -215,7 +216,7 @@ export const typeDefs = `#graphql
     bookTicket(companyId: Int!, passengerName:String!,seatNumber: String!, amount:Int!, routeId: String!, created_by:String, updated_by:String,
      passengerEmail: String!,paymentMethod:String!, currency:String!, partyIdType: String!, partyId: String!,
       payerMessage: String!, payeeNote: String!,
-     numberOfTickets:Int!): Tickets
+     numberOfTickets:Int!, phone:String): Tickets
     
   }
 `;

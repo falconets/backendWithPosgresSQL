@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import { v4 as uuidv4 } from "uuid";
-import { Tickets, TicketProps, Context, statusEnum, BusRoutesProps } from "../../../../type";
+import { Tickets, TicketProps, Context, statusEnum } from "../../../../type";
 
 export const bookTicket = async (
   parent: Tickets["parent"],

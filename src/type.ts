@@ -164,6 +164,7 @@ export type TicketProps = {
   companyId: string;
   ticketId: string;
   passengerName: string;
+  phone?: string;
   seatNumber: string;
   numberOfTickets: number;
   amount: number;
