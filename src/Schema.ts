@@ -50,23 +50,29 @@ export const typeDefs = `#graphql
   }
 
   type Tickets{
-    saleId: ID!
-    customerId: String!
-    busId: String!
-    routeId: String!
-    saleAmount: String!
-    saleDateTime: DateTime
-    status: String!
-  }
-
-  type Payments{
-    id: ID!
-    saleId: ID!
-    paymentAmount: String!
-    dateTime: DateTime
+   companyId: ID!
+   ticketId: ID!
+   passengerName: String!
+   seatNumber: String!
+   phone: String
+   amount: Int! 
+   numberOfTickets: Int
+   createdAt: String
+   updatedAt: String
+   routeId: ID!
+   bookingReference: String
+   passengerEmail: String!
     paymentMethod: String!
-    bus_company: String
+    financialTransactionId: String!
+    externalId: String!
+    currency: String!
+    partyIdType: String!
+    partyId: String!
+    payerMessage: String!
+    payeeNote: String!
     status: String!
+   created_by: String
+   updated_by: String
   }
 
   type BusRoutes{
@@ -102,6 +108,16 @@ export const typeDefs = `#graphql
     createdAt: DateTime
     updatedAt: DateTime
   }
+  
+  type BusSchedules{
+    id: ID!
+    companyId: Int
+    busId: String
+    date: DateTime
+    time: String
+    routeId: String
+    tickets: Int
+  }
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -111,7 +127,7 @@ export const typeDefs = `#graphql
     oneBook(id:String!): Book
 
     #Company queries
-    allCompanies: [Company]!
+    allCompanies: [Company]
 
     #Users queries
     allusers:[users]!
@@ -122,23 +138,30 @@ export const typeDefs = `#graphql
     allBuses:[Buses!],
     busesByCompany(bus_company:Int!):[Buses]
 
-    #Ticket queries
-    allTickets: [Tickets!]
-    ticketById(saleId:ID!): Tickets
-    ticketsByBusAndRoute(busId:String!,routeId:String!):[Tickets]
-
-    #Payments queries
-    allpayments:[Payments!]
-    paymentsById(id:ID!): Payments
-    paymentsByCompany(bus_company:String!): Payments
 
     #Routes queries
     getBusRoutes: [BusRoutes]
     getBusStops(companyid:String): [BusStops]
     getBusRoutesStops(routeId:String!): [BusStops]
+    getBusRoutesById(id: String!): BusRoutes
     
-    
-  }
+
+    #Schedules queries
+    getBusSchedules: [BusSchedules]
+    getBusScheduleByDate(date: DateTime!): [BusSchedules]
+    getBusScheduleByCompanyId(company_id:Int!): [BusSchedules]
+    getBusScheduleByRouteId(route_id:String!): [BusSchedules]
+   # getScheduleByBusId(bus_id:String!): [BusSchedules]
+
+
+   #Tickets queries
+   getTickets: [Tickets]
+   getTicketsByStatus(status: String!): [Tickets]
+   getTicketsByDate(date: DateTime!): [Tickets]
+   getTicketsById(id: String!): Tickets
+   getTicketsByCompanyId(company_id:Int!): [Tickets]
+
+  }#end of Query type definitions
 
   # The "Mutation" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each.
@@ -166,16 +189,6 @@ export const typeDefs = `#graphql
     deleteBus(bus_id:Int!): Boolean
     updateBus(bus_model:String!,plate_number:String!,seat_capacity:Int!, bus_company:Int!, bus_id:Int): Buses
 
-    #tickets mutations
-    bookTicket(customerId: String!, busId: String!, routeId: String!, saleAmount: String!, status: String): Tickets
-    updateTicket(busId:String, routeId: String!, saleAmount: String!, status: String): Tickets
-    removeTicket(saleId:ID!): Boolean
-
-    #Payments mutations
-    makePayment(saleId: String!, paymentAmount: String!, paymentMethod: String!, bus_company: String, status: String!): Payments
-    updatePayment(status: String, paymentAmount: String!, paymentMethod: String!): Payments
-    removePayment(paymentId: ID!):Boolean
-
 
     #Routes mutations
     addBusRoutes(companyId: Int!, routeName: String, distanceInKm: Int,
@@ -192,6 +205,18 @@ export const typeDefs = `#graphql
 
     addBusRoutesStops(routeId: String, stopId: String, stopOrder: Int): BusRoutesStops
 
+
+    #Schedules mutations
+    addBusSchedule(companyId: Int!, busId: String!, date: DateTime!, time: String!, routeId: String!, tickets: Int!): BusSchedules
+    deleteBusSchedule(id:String): Boolean
+    updateBusSchedule(id:String!, date: DateTime, time: String, routeId: String, tickets: Int): BusSchedules
+
+
+    #Tickets mutations
+    bookTicket(companyId: Int!, passengerName:String!,seatNumber: String!, amount:Int!, routeId: String!, created_by:String, updated_by:String,
+     passengerEmail: String!,paymentMethod:String!, currency:String!, partyIdType: String!, partyId: String!,
+      payerMessage: String!, payeeNote: String!,
+     numberOfTickets:Int!, phone:String): Tickets
     
   }
 `;

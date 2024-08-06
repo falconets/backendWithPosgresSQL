@@ -16,6 +16,10 @@ const toggleBusRoutesActive = (s:BusRoutesProps)=>{
   return `UPDATE ${table} SET active='${s.active}' WHERE id='${s.id}'`;
 }
 
+const getBusRoutesById = (s:BusRoutesProps) => {
+  return `SELECT * FROM ${table} WHERE id='${s.id}'`;
+}
+
 const deleteBusRoutes = (s:BusRoutesProps)=>{
   return `DELETE FROM ${table} WHERE id='${s.id}'`;
 }
@@ -30,4 +34,5 @@ export default {
   getBusRoutes,
   toggleBusRoutesActive,
   deleteBusRoutes,
+  getBusRoutesById,
 };

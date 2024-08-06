@@ -15,7 +15,6 @@ const table2 = tracks.BUS_ROUTES_STOPS
  }
 
  const getBusStop = (s:BusStopProps)=>{
-      console.log('companyId',s.companyid)
       return `SELECT * FROM ${table} WHERE companyid='${s.companyid}'`
  }
 

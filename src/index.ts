@@ -10,7 +10,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import http from "http";
 import { typeDefs } from "./Schema.js";
 import { resolvers } from "./resolvers";
-import Pool from "./config";
+import data from "./config";
 import models from "./models";
 import { verifyToken } from "./utils/VerifyToken.js";
 
@@ -59,13 +59,17 @@ server.start().then(() => {
       context: async ({ req }) => {
         const token = req.headers.authorization || "";
         const user = verifyToken({ token: token });
-        console.log('token', token)
-        console.log('user', user)
-        const db = Pool;
-        return { db, models, user };
+        const db = data.Pool;
+        const firestore = data.firestore;
+        const mtn = data.mtn
+        return { db, models, user, firestore, mtn};
       },
     })
   );
+});
+
+app.get("/schedule", (req, res) => {
+  res.send("I'm OK!");
 });
 
 httpServer.listen({ port: port }, () => {

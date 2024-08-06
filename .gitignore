@@ -2,3 +2,5 @@
 package-lock.json
 lib
 node_modules
+yarn.lock
+admin.json
