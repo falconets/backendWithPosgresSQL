@@ -14,9 +14,7 @@ const allBuses = ()=>{
  * @returns a list of all buses that I registered under a company
  */
 const busByCompanyId = (s:busesProp)=>{
-      return `SELECT buses.bus_id, buses.bus_model, buses.plate_number, 
-      buses.seat_capacity, bus_company.companyid FROM buses JOIN bus_company 
-      ON buses.bus_company = bus_company.companyid WHERE bus_company.companyid =${s.bus_company};`
+      return `SELECT * from public.buses WHERE bus_company=${s.bus_company};`
 }
 
 /**

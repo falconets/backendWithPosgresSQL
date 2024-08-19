@@ -9,7 +9,7 @@ export const getBusScheduleByCompanyId = async (
   try {
     const res = await models.schedules.getBusScheduleByCompanyId(
       firestore,
-      args.company_id
+      args.companyId
     );
     return res as BusScheduleProps[];
   } catch (error) {

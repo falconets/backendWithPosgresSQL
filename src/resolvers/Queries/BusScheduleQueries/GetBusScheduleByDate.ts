@@ -9,7 +9,7 @@ export const getBusScheduleByDate = async (
   try {
     const res = await models.schedules.getBusScheduleByDate(
       firestore,
-      args.date
+      args.start
     );
     return res as BusScheduleProps[];
   } catch (error) {

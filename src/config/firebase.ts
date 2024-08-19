@@ -20,8 +20,6 @@ const credentials = {
     "universe_domain": process.env.universe_domain,
 }
 
-console.log(credentials);
-
 const firebase = admin.initializeApp({
     credential: admin.credential.cert(credentials as ServiceAccount),
 })

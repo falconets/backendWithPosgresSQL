@@ -7,26 +7,54 @@ export const resolverMap = {
     name: 'Date',
     description: 'Date custom scalar type',
     parseValue(value) {
-      // value from the client, which can be a string or number
-      return new Date(value as any);
+      // Expecting value to be a string or number
+      const date = new Date(value as string|number);
+
+      // Ensure the date is valid
+      if (isNaN(date.getTime())) {
+        throw new Error(`Invalid date: ${value}`);
+      }
+
+      return date;
     },
     serialize(value: any) {
-      // value sent to the client
+      // Handle Firestore Timestamps
       if (value instanceof Timestamp) {
-        // If the value is a Firestore Timestamp, convert it to a Date
         return value.toDate().toISOString();
       }
+      
+      // Handle Date objects
       if (value instanceof Date) {
         return value.toISOString();
       }
+
+      // Handle string inputs
+      if (typeof value === 'string') {
+        const date = new Date(value);
+
+        // Ensure the date is valid
+        if (isNaN(date.getTime())) {
+          throw new Error(`Invalid date string: ${value}`);
+        }
+
+        return date.toISOString();
+      }
+
       return null;
     },
     parseLiteral(ast) {
       if (ast.kind === Kind.INT) {
-        return new Date(parseInt(ast.value, 10)); // ast value is always in string format
+        return new Date(parseInt(ast.value, 10));
       }
       if (ast.kind === Kind.STRING) {
-        return new Date(ast.value); // ast value is always in string format
+        const date = new Date(ast.value);
+
+        // Ensure the date is valid
+        if (isNaN(date.getTime())) {
+          throw new Error(`Invalid date string in literal: ${ast.value}`);
+        }
+
+        return date;
       }
       return null;
     },

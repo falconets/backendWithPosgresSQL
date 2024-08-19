@@ -145,14 +145,20 @@ export type BusRoutesStops = {
   args: BusRoutesStopProps;
 };
 
+
 export type BusScheduleProps = {
   id?: string;
-  company_id: number;
-  bus_id: number;
-  date: admin.firestore.Timestamp | string; // Date string in YYYY-MM-DD format
-  time: string; // Time string in HH:MM format
-  route_id: string;
+  companyId: number;
+  busPlateNumber: string;
+  start: admin.firestore.Timestamp | string; 
+  end: admin.firestore.Timestamp | string; 
+  routeId: string;
   tickets: number;
+  description: string;
+  background: string;
+  borderColor: string;
+  recurrenceRule: string;
+  recurrenceExceptions: string;
 };
 
 export type BusSchedule = {

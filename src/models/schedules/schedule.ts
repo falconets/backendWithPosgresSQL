@@ -1,9 +1,10 @@
 import { BusScheduleProps } from "@types";
 import { Timestamp } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
+import { RRule} from "rrule";
 
 enum CollectionName {
-  BUS_SCHEDULES = "busSchedules",
+  BUS_SCHEDULES = "schedules",
 }
 
 const getBusSchedules = async (
@@ -27,22 +28,62 @@ const getBusSchedules = async (
 
 const getBusScheduleByDate = async (
   firestore: FirebaseFirestore.Firestore,
-  date: string | Timestamp
+  date: string | Timestamp,
 ): Promise<BusScheduleProps[]> => {
   try {
-    console.log("date:", date);
-    const snapshot = await firestore
-      .collection(CollectionName.BUS_SCHEDULES)
-      .where("date", "==", date)
-      .get();
-    const data: BusScheduleProps[] = [];
+    const targetDateStr = new Date(date as string).toISOString().split('T')[0];
+    console.log("date:", targetDateStr );
 
-    snapshot.forEach((doc: any) => {
+    // const snapshot = await firestore
+    //   .collection(CollectionName.BUS_SCHEDULES)
+    //   .where("date", "<=", date)
+    //   .get();
+    // const data: BusScheduleProps[] = [];
+
+    // snapshot.forEach((doc: any) => {
+    //   const docData = doc.data() as BusScheduleProps;
+    //   data.push({ id: doc.id, ...docData });
+    // });
+    // return data;
+    const busSchedulesRef = await firestore
+      .collection(CollectionName.BUS_SCHEDULES)
+      .where("start", "<=", targetDateStr )
+      .orderBy("start")
+      .get();
+
+    let schedules: BusScheduleProps[] = [];
+    busSchedulesRef.forEach((doc)=>{
       const docData = doc.data() as BusScheduleProps;
-      data.push({ id: doc.id, ...docData });
+      schedules.push({ id: doc.id,...docData });
+    })
+
+    let result:BusScheduleProps[] = [];
+    schedules.forEach(schedule => {
+      if (schedule.recurrenceRule) {
+        const rule = RRule.fromString(schedule.recurrenceRule);
+  
+        // Expand the recurrence rule to check if it includes the target date
+        const occurrences = rule.between(
+          new Date(schedule.start as string),
+          new Date(schedule.end as string)
+        );
+  
+        if (occurrences.some(date => date === date)) {
+          // Check for exceptions
+          if (!schedule.recurrenceExceptions || !schedule.recurrenceExceptions.includes(targetDateStr)) {
+            result.push(schedule);
+          }
+        }
+      } else {
+        // If it's a one-time event, add it directly
+        result.push(schedule);
+      }
     });
-    return data;
+  
+    return result;
+
   } catch (err) {
+    console.log('Error getting bus schedules by date:', err);
     throw new Error("Failed to get bus schedules by date");
   }
 };
@@ -95,11 +136,10 @@ const addBusSchedule = async (
 ): Promise<BusScheduleProps> => {
   try {
     const docId = uuidv4();
-    const res = await firestore
+    await firestore
       .collection(CollectionName.BUS_SCHEDULES)
       .doc(docId)
       .set(data);
-    console.log("Document written with data: ", res);
     return {
       id: docId,
       ...data,
@@ -126,6 +166,7 @@ const deleteBusSchedule = async (
     await docRef.delete();
     return true;
   } catch (err) {
+    console.log(err);
     throw new Error("Failed to delete bus schedule");
   }
 };

@@ -111,12 +111,17 @@ export const typeDefs = `#graphql
   
   type BusSchedules{
     id: ID!
-    companyId: Int
-    busId: String
-    date: DateTime
-    time: String
+    companyId: Int!
+    busPlateNumber: String!
+    start: DateTime!
+    end: DateTime!
     routeId: String
     tickets: Int
+    description: String
+    background: String
+    borderColor: String
+    recurrenceRule: String
+    recurrenceExceptions: String
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -148,10 +153,10 @@ export const typeDefs = `#graphql
 
     #Schedules queries
     getBusSchedules: [BusSchedules]
-    getBusScheduleByDate(date: DateTime!): [BusSchedules]
+    getBusScheduleByDate(start: DateTime!): [BusSchedules]
     getBusScheduleByCompanyId(company_id:Int!): [BusSchedules]
     getBusScheduleByRouteId(route_id:String!): [BusSchedules]
-   # getScheduleByBusId(bus_id:String!): [BusSchedules]
+   # getScheduleByBusId(busPlateNumber:String!): [BusSchedules]
 
 
    #Tickets queries
@@ -207,9 +212,11 @@ export const typeDefs = `#graphql
 
 
     #Schedules mutations
-    addBusSchedule(companyId: Int!, busId: String!, date: DateTime!, time: String!, routeId: String!, tickets: Int!): BusSchedules
-    deleteBusSchedule(id:String): Boolean
-    updateBusSchedule(id:String!, date: DateTime, time: String, routeId: String, tickets: Int): BusSchedules
+    addBusSchedule(companyId: Int!, busPlateNumber: String!, start: String!, end: String!, routeId: String!, tickets: Int!,
+        description:String, background:String, borderColor:String, recurrenceRule:String, recurrenceExceptions:String): BusSchedules
+    deleteBusSchedule(id:String!): Boolean
+    updateBusSchedule(id:String!, start: String, end: String, description:String, recurrenceRule:String,
+     recurrenceExceptions:String, tickets: Int): BusSchedules
 
 
     #Tickets mutations
