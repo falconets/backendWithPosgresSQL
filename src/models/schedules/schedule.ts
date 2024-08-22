@@ -1,7 +1,6 @@
 import { BusScheduleProps } from "@types";
 import { Timestamp } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
-import { RRule} from "rrule";
 
 enum CollectionName {
   BUS_SCHEDULES = "schedules",
@@ -31,56 +30,56 @@ const getBusScheduleByDate = async (
   date: string | Timestamp,
 ): Promise<BusScheduleProps[]> => {
   try {
-    const targetDateStr = new Date(date as string).toISOString().split('T')[0];
-    console.log("date:", targetDateStr );
+    //const targetDateStr = new Date(date as string).toISOString().split('T')[0];
 
-    // const snapshot = await firestore
-    //   .collection(CollectionName.BUS_SCHEDULES)
-    //   .where("date", "<=", date)
-    //   .get();
-    // const data: BusScheduleProps[] = [];
-
-    // snapshot.forEach((doc: any) => {
-    //   const docData = doc.data() as BusScheduleProps;
-    //   data.push({ id: doc.id, ...docData });
-    // });
-    // return data;
-    const busSchedulesRef = await firestore
+    const snapshot = await firestore
       .collection(CollectionName.BUS_SCHEDULES)
-      .where("start", "<=", targetDateStr )
-      .orderBy("start")
+      .where("start", "<=", date)
       .get();
+    const data: BusScheduleProps[] = [];
 
-    let schedules: BusScheduleProps[] = [];
-    busSchedulesRef.forEach((doc)=>{
+    snapshot.forEach((doc: any) => {
       const docData = doc.data() as BusScheduleProps;
-      schedules.push({ id: doc.id,...docData });
-    })
-
-    let result:BusScheduleProps[] = [];
-    schedules.forEach(schedule => {
-      if (schedule.recurrenceRule) {
-        const rule = RRule.fromString(schedule.recurrenceRule);
-  
-        // Expand the recurrence rule to check if it includes the target date
-        const occurrences = rule.between(
-          new Date(schedule.start as string),
-          new Date(schedule.end as string)
-        );
-  
-        if (occurrences.some(date => date === date)) {
-          // Check for exceptions
-          if (!schedule.recurrenceExceptions || !schedule.recurrenceExceptions.includes(targetDateStr)) {
-            result.push(schedule);
-          }
-        }
-      } else {
-        // If it's a one-time event, add it directly
-        result.push(schedule);
-      }
+      console.log("founded schedule:",{ id: doc.id, ...docData })
+      data.push({ id: doc.id, ...docData });
     });
+    return data;
+    // const busSchedulesRef = await firestore
+    //   .collection(CollectionName.BUS_SCHEDULES)
+    //   .where("start", "<=", targetDateStr )
+    //   .orderBy("start")
+    //   .get();
+
+    // let schedules: BusScheduleProps[] = [];
+    // busSchedulesRef.forEach((doc)=>{
+    //   const docData = doc.data() as BusScheduleProps;
+    //   schedules.push({ id: doc.id,...docData });
+    // })
+
+    // let result:BusScheduleProps[] = [];
+    // schedules.forEach(schedule => {
+    //   if (schedule.recurrenceRule) {
+    //     const rule = RRule.fromString(schedule.recurrenceRule);
   
-    return result;
+    //     // Expand the recurrence rule to check if it includes the target date
+    //     const occurrences = rule.between(
+    //       new Date(schedule.start as string),
+    //       new Date(schedule.end as string)
+    //     );
+  
+    //     if (occurrences.some(date => date === date)) {
+    //       // Check for exceptions
+    //       if (!schedule.recurrenceExceptions || !schedule.recurrenceExceptions.includes(targetDateStr)) {
+    //         result.push(schedule);
+    //       }
+    //     }
+    //   } else {
+    //     // If it's a one-time event, add it directly
+    //     result.push(schedule);
+    //   }
+    // });
+  
+    // return result;
 
   } catch (err) {
     console.log('Error getting bus schedules by date:', err);
