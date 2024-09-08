@@ -5,6 +5,7 @@ import { busesMutation } from "./busesMutation"
 import RouteMutation from "./RouteMutation";
 import BusScheduleMutation from "./BusScheduleMutation";
 import ticketMutations from "./BusTickets";
+import BusSeats from "./BusSeats";
 
 export const Mutation = {
   ...bookMutations,
@@ -14,4 +15,5 @@ export const Mutation = {
   ...RouteMutation,
   ...BusScheduleMutation,
   ...ticketMutations,
+  ...BusSeats,
 };

@@ -1,5 +1,5 @@
 import { BusScheduleProps } from "@types";
-import { Timestamp } from "firebase-admin/firestore";
+import { Firestore, Timestamp } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 enum CollectionName {
@@ -131,16 +131,19 @@ const getBusScheduleByRouteId = async (
 
 const addBusSchedule = async (
   firestore: FirebaseFirestore.Firestore,
+  transaction: FirebaseFirestore.Transaction,
   data: BusScheduleProps
 ): Promise<BusScheduleProps> => {
   try {
     const docId = uuidv4();
-    await firestore
+    const ref = await firestore
       .collection(CollectionName.BUS_SCHEDULES)
       .doc(docId)
-      .set(data);
+
+      await transaction.set(ref, data)
+
     return {
-      id: docId,
+      id: ref.id,
       ...data,
     };
   } catch (err) {

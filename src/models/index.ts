@@ -5,6 +5,8 @@ import buses from "./busModel";
 import routes from "./routes";
 import schedules from "./schedules";
 import tickets from "./tickets";
+import bus_seats from "./bus_seats";
+import journey_seats from "./journey_seats";
 
 export default {
   Book,
@@ -14,4 +16,6 @@ export default {
   routes,
   schedules,
   tickets,
+  bus_seats,
+  journey_seats,
 };

@@ -124,6 +124,19 @@ export const typeDefs = `#graphql
     recurrenceExceptions: String
   }
 
+  type BusSeats{
+    seat_id:ID
+    bus_id: Int
+    seatNumber: String
+    seatType: String
+    is_available: Boolean
+    row:Int
+    col:Int
+    aisleColumn: Int
+    createdAt: DateTime
+    updatedAt: DateTime
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -142,6 +155,7 @@ export const typeDefs = `#graphql
     #Buses queries
     allBuses:[Buses!],
     busesByCompany(bus_company:Int!):[Buses]
+    busByPlateNumber(plate_number:String!):Buses
 
 
     #Routes queries
@@ -165,6 +179,10 @@ export const typeDefs = `#graphql
    getTicketsByDate(date: DateTime!): [Tickets]
    getTicketsById(id: String!): Tickets
    getTicketsByCompanyId(company_id:Int!): [Tickets]
+
+   #Bus Seats queries
+   getSeatsByBusId(busId:String!): [BusSeats]
+   getSeatsById(seatId:String!): [BusSeats]
 
   }#end of Query type definitions
 
@@ -224,6 +242,12 @@ export const typeDefs = `#graphql
      passengerEmail: String!,paymentMethod:String!, currency:String!, partyIdType: String!, partyId: String!,
       payerMessage: String!, payeeNote: String!,
      numberOfTickets:Int!, phone:String): Tickets
+
+
+     #Bus seats mutations
+     addBusSeats(busId:Int!, seatNumber:String!, seatType: String!, is_available: Boolean!, row:Int!, col:Int!, aisleColumn:Int!): BusSeats
+     deleteBusSeats(busId:String!): Boolean
+     updateBusSeat(seat_id:String!, seatNumber:String!, seatType: String!, is_available: Boolean!, row:Int!, col:Int!): BusSeats
     
   }
 `;

@@ -38,10 +38,18 @@ const updateBus = (s:busesProp)=>{
 	WHERE bus_id=${s.bus_id} RETURNING *;`;
 }
 
+const busByPlateNumber = (plateNumber: string)=>{
+      return{
+            text: `SELECT * FROM public.buses WHERE plate_number=$1`,
+            values: [plateNumber]
+      }
+}
+
 export default {
       allBuses,
       busByCompanyId,
       addBus,
       deleteBus,
-      updateBus
+      updateBus,
+      busByPlateNumber,
 }

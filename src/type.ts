@@ -244,3 +244,36 @@ export interface transferArgs {
   payerMessage: string;
   payeeNote: string;
 }
+
+export interface BusSeats{
+  seat_id: string;
+  busId: string;
+  seatNumber: string;
+  seatType: string;
+  is_available: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  row: number;
+  col: number;
+  aisleColumn: number;
+}
+
+export type BusSeatsProp = {
+  parent: any;
+  args: BusSeats;
+}
+
+export interface JourneySeatProps {
+  id?: string
+  schedule_id: string
+  seat_id: string
+  is_booked: boolean
+  booking_id?: string
+  created_at?: string | null
+  updated_at?: string | null
+}
+
+export type JourneySeat = {
+  parent: any;
+  args: JourneySeatProps;
+}

@@ -7,4 +7,5 @@ export enum tracks {
   REVIEWS = "reviews",
   TICKETS = "tickets",
   USERS = "users",
+  BUS_SEATS= "bus_seats",
 }
