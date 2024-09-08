@@ -1,5 +1,5 @@
 import { BusScheduleProps } from "@types";
-import { Firestore, Timestamp } from "firebase-admin/firestore";
+import {Timestamp } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 enum CollectionName {
