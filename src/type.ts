@@ -158,7 +158,7 @@ export type BusScheduleProps = {
   background: string;
   borderColor: string;
   recurrenceRule: string;
-  recurrenceExceptions: string;
+  recurrenceExceptions: string | string[];
 };
 
 export type BusSchedule = {
@@ -276,4 +276,21 @@ export interface JourneySeatProps {
 export type JourneySeat = {
   parent: any;
   args: JourneySeatProps;
+}
+
+export type journeyInstanceProps = {
+  id?: string
+  scheduleId: string
+  journeyDate: string | admin.firestore.Timestamp
+  startTime: string | admin.firestore.Timestamp
+  endTime: string | admin.firestore.Timestamp
+  busId: string
+  routeId: string
+  createdAt: string
+  companyId: string
+}
+
+export type JourneyInstance = {
+  parent: any;
+  args: journeyInstanceProps;
 }

@@ -40,7 +40,7 @@ const updateBus = (s:busesProp)=>{
 
 const busByPlateNumber = (plateNumber: string)=>{
       return{
-            text: `SELECT * FROM public.buses WHERE plate_number=$1`,
+            text: `SELECT * FROM public.buses WHERE "plate_number"=$1`,
             values: [plateNumber]
       }
 }

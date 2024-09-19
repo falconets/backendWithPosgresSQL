@@ -1,10 +1,8 @@
+import { CollectionName } from "../../tables";
 import { BusScheduleProps } from "@types";
 import {Timestamp } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
 
-enum CollectionName {
-  BUS_SCHEDULES = "schedules",
-}
 
 const getBusSchedules = async (
   firestore: FirebaseFirestore.Firestore

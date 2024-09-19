@@ -9,3 +9,8 @@ export enum tracks {
   USERS = "users",
   BUS_SEATS= "bus_seats",
 }
+
+export enum CollectionName {
+  BUS_SCHEDULES = "schedules",
+  JOURNEY_INSTANCES = "journey_instances"
+}

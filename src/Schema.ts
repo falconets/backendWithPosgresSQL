@@ -137,6 +137,28 @@ export const typeDefs = `#graphql
     updatedAt: DateTime
   }
 
+  type RouteSeats{
+    id: ID!
+    schedule_id: String!
+    seat_id: ID!
+    is_booked: Boolean
+    booking_id: String
+    createdAt: DateTime
+    updatedAt: DateTime
+  }
+
+  type JourneyInstances{
+    id: ID!
+    scheduleId: String!
+    companyId: String!
+    journeyDate: DateTime
+    startTime: DateTime
+    endTime: DateTime
+    busId: String
+    routeId: String
+    createdAt: DateTime
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -183,6 +205,18 @@ export const typeDefs = `#graphql
    #Bus Seats queries
    getSeatsByBusId(busId:String!): [BusSeats]
    getSeatsById(seatId:String!): [BusSeats]
+
+   #Journey Seats queries
+   getJourneySeatsByScheduleId(schedule_id:String!): [RouteSeats]
+   getSeatById(seat_id:String!): RouteSeats
+   getJourneySeatsById(id:String!): [RouteSeats]
+
+   #Journey Instances queries
+   getJourneyInstancesByScheduleId(scheduleId:String!): [JourneyInstances]
+   getJourneyInstancesByDate(date: DateTime!): [JourneyInstances]
+   getJourneyInstancesById(id:String!): [JourneyInstances]
+   getJourneyInstancesByBusId(busPlateNumber:String!): [JourneyInstances]
+   getJourneyInstancesByRouteId(routeId:String!): [JourneyInstances]
 
   }#end of Query type definitions
 

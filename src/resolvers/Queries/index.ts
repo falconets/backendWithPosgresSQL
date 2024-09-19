@@ -6,6 +6,8 @@ import CompanyQuries from "./CompanyQuries"
 import BusScheduleQueries from "./BusScheduleQueries"
 import ticketQuery from "./BusTicketsQueries"
 import BusSeats from "./BusSeats"
+import JourneySeats from "./JourneySeats"
+import JourneyInstances from "./JourneyInstances"
 
 export const Query = {
       ...bookQuery,
@@ -16,4 +18,6 @@ export const Query = {
       ...BusScheduleQueries,
       ...ticketQuery,
       ...BusSeats,
+      ...JourneySeats,
+      ...JourneyInstances
 }
