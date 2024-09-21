@@ -178,6 +178,7 @@ export const typeDefs = `#graphql
     allBuses:[Buses!],
     busesByCompany(bus_company:Int!):[Buses]
     busByPlateNumber(plate_number:String!):Buses
+    busById(bus_id:String!):Buses
 
 
     #Routes queries
@@ -185,12 +186,13 @@ export const typeDefs = `#graphql
     getBusStops(companyid:String): [BusStops]
     getBusRoutesStops(routeId:String!): [BusStops]
     getBusRoutesById(id: String!): BusRoutes
+    getBusRoutesByCompanyId(companyId:Int!): [BusRoutes]
     
 
     #Schedules queries
     getBusSchedules: [BusSchedules]
     getBusScheduleByDate(start: DateTime!): [BusSchedules]
-    getBusScheduleByCompanyId(company_id:Int!): [BusSchedules]
+    getBusScheduleByCompanyId(companyId:Int!): [BusSchedules]
     getBusScheduleByRouteId(route_id:String!): [BusSchedules]
    # getScheduleByBusId(busPlateNumber:String!): [BusSchedules]
 

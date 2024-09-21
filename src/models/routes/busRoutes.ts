@@ -28,6 +28,13 @@ const getBusRoutes = () => {
   return `SELECT * FROM ${table}`;
 };
 
+const getBusRoutesByCompanyId = (companyId:number)=>{
+  return {
+    text: `SELECT * FROM ${table} WHERE "companyId"=$1`,
+    values: [companyId]
+  }
+}
+
 
 export default {
   addBusRoutes,
@@ -35,4 +42,5 @@ export default {
   toggleBusRoutesActive,
   deleteBusRoutes,
   getBusRoutesById,
+  getBusRoutesByCompanyId,
 };

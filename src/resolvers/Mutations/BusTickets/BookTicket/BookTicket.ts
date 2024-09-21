@@ -1,7 +1,6 @@
 import { GraphQLError } from "graphql";
 import { v4 as uuidv4 } from "uuid";
 import { Tickets, TicketProps, Context, statusEnum, JourneySeatProps } from "../../../../type";
-import journeySeat from "../../../../models/journey_seats";
 
 type Seat = {
   seatNumber: string; 
@@ -27,7 +26,7 @@ export const bookTicket = async (
 
     // Helper function to check if a seat is available
     const checkAndReserveSeat = async (seat: Seat): Promise<JourneySeatProps> => {
-      const seatDataQuery = await client.query(journeySeat.getSeatById(seat.id));
+      const seatDataQuery = await client.query(models.journey_seats.getSeatById(seat.id));
       const seatData: JourneySeatProps = seatDataQuery.rows[0];
 
       if (!seatData) {
@@ -35,11 +34,11 @@ export const bookTicket = async (
       }
 
       if (seatData.is_booked) {
-        throw new Error(`Seat ${seat.seatNumber} is already booked`);
+        throw new Error(`Seat: ${seat.seatNumber} of id: ${seat.id} is already booked`);
       }
 
       // Reserve the seat by marking it as booked temporarily (can later commit or rollback)
-      await client.query(journeySeat.reserveSeat(seat.id));
+      await client.query(models.journey_seats.reserveSeat(seat.id));
       
       return seatData;
     };

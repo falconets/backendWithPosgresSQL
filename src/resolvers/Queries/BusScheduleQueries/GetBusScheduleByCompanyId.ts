@@ -7,6 +7,7 @@ export const getBusScheduleByCompanyId = async (
   { models, firestore }: Context
 ): Promise<BusScheduleProps[]> => {
   try {
+    console.log('received bus schedule', args.companyId)
     const res = await models.schedules.getBusScheduleByCompanyId(
       firestore,
       args.companyId
