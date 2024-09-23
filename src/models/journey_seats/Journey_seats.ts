@@ -45,10 +45,19 @@ const reserveSeat = (seatId: string) => {
   return `
        UPDATE public.journey_seats 
       SET "is_booked" = TRUE 
-      WHERE "seat_id" = '${seatId}' 
+      WHERE "id" = '${seatId}' 
       RETURNING *;
     `;
 };
+
+const updateBookingId = (id:string, bookingReference:string)=>{
+  return `
+      UPDATE public.journey_seats 
+      SET "booking_id"='${bookingReference}'
+      WHERE "id"='${id}' 
+      RETURNING *;
+    `;
+}
 
 export default {
   addJourneySeats,
@@ -56,4 +65,5 @@ export default {
   getSeatById,
   getJourneySeatsById,
   reserveSeat,
+  updateBookingId,
 };

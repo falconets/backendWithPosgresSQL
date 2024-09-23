@@ -26,7 +26,7 @@ export const bookTicket = async (
 
     // Helper function to check if a seat is available
     const checkAndReserveSeat = async (seat: Seat): Promise<JourneySeatProps> => {
-      const seatDataQuery = await client.query(models.journey_seats.getSeatById(seat.id));
+      const seatDataQuery = await client.query(models.journey_seats.getJourneySeatsById(seat.id));
       const seatData: JourneySeatProps = seatDataQuery.rows[0];
 
       if (!seatData) {
@@ -97,6 +97,21 @@ export const bookTicket = async (
     // Insert the ticket data into the database
     const regDBResponse = await client.query(models.tickets.addTicket(ticketData));
     const savedTicket: TicketProps = regDBResponse.rows[0];
+
+    // Update the journey seats status with booking id
+    if (selectedSeats.oneWay) {
+      for (const seat of selectedSeats.oneWay) {
+        await client.query(models.journey_seats.updateBookingId(seat.id, savedTicket.externalId));
+      }
+    }
+
+    if (selectedSeats.return) {
+      for (const seat of selectedSeats.return) {
+        await client.query(models.journey_seats.updateBookingId(seat.id, savedTicket.externalId));
+      }
+    }
+
+
 
     // Commit the transaction and mark seats as booked
     await client.query('COMMIT');
