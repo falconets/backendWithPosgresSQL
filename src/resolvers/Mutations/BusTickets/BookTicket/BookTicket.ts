@@ -25,37 +25,41 @@ export const bookTicket = async (
     const selectedSeats: Seats = JSON.parse(args.seatNumber);
 
     // Helper function to check if a seat is available
-    const checkAndReserveSeat = async (seat: Seat): Promise<JourneySeatProps> => {
-      const seatDataQuery = await client.query(models.journey_seats.getJourneySeatsById(seat.id));
-      const seatData: JourneySeatProps = seatDataQuery.rows[0];
-
-      if (!seatData) {
-        throw new Error(`Seat with ID ${seat.id} not found`);
+    const checkAndReserveSeats = async (seatIds: string[]): Promise<JourneySeatProps[]> => {
+      // Step 1: Fetch all seat data for the given seat IDs
+      const seatDataQuery = await client.query(models.journey_seats.getJourneySeatsByIds(seatIds));
+      const seatDataRows: JourneySeatProps[] = seatDataQuery.rows;
+    
+      // Step 2: Check if all seats are available (not booked)
+      for (const seatData of seatDataRows) {
+        if (!seatData.id) {
+          throw new Error(`Seat with ID ${seatData.id} not found`);
+        }
+        if (seatData.is_booked) {
+          throw new Error(`id: ${seatData.id} is already booked`);
+        }
       }
-
-      if (seatData.is_booked) {
-        throw new Error(`Seat: ${seat.seatNumber} of id: ${seat.id} is already booked`);
-      }
-
-      // Reserve the seat by marking it as booked temporarily (can later commit or rollback)
-      await client.query(models.journey_seats.reserveSeat(seat.id));
-      
-      return seatData;
+    
+      // Step 3: Reserve the seats by marking them as booked in a single query
+      await client.query(models.journey_seats.reserveSeats(seatIds));
+    
+      // Return the seat data for further processing
+      return seatDataRows;
     };
+    
 
-    // Check and reserve one-way seats
+      // Check and reserve one-way seats in a batch
     if (selectedSeats.oneWay) {
-      for (const seat of selectedSeats.oneWay) {
-        await checkAndReserveSeat(seat);
-      }
+      const oneWaySeatIds = selectedSeats.oneWay.map(seat => seat.id);
+      await checkAndReserveSeats(oneWaySeatIds);
     }
 
-    // Check and reserve return seats
+      // Check and reserve return seats in a batch
     if (selectedSeats.return) {
-      for (const seat of selectedSeats.return) {
-        await checkAndReserveSeat(seat);
-      }
+      const returnSeatIds = selectedSeats.return.map(seat => seat.id);
+      await checkAndReserveSeats(returnSeatIds);
     }
+
 
     // Verify user account before proceeding with the payment
     const checkPaymentAccount = await mtn.verifyAccountHolder(args.partyId);

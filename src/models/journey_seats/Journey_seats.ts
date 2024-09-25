@@ -18,52 +18,80 @@ const addJourneySeats = (seat: JourneySeatProps) => {
 
 // Function to fetch journey seats by schedule ID
 const getJourneySeatsByScheduleId = (scheduleId: string) => {
-  return `
-    SELECT * FROM public.journey_seats 
-    WHERE "schedule_id" = '${scheduleId}';
-  `;
+  return {
+    text: `
+      SELECT * FROM public.journey_seats 
+      WHERE "schedule_id" = $1;
+    `,
+    values: [scheduleId],
+  };
 };
 
 // Function to fetch a seat by seat ID
 const getSeatById = (seatId: string) => {
-  return `
-    SELECT * FROM public.journey_seats 
-    WHERE "seat_id" = '${seatId}';
-  `;
+  return {
+    text: `
+      SELECT * FROM public.journey_seats 
+      WHERE "seat_id" = $1;
+    `,
+    values: [seatId],
+  };
 };
 
-// Function to fetch journey seats by journey seat ID
-const getJourneySeatsById = (id: string) => {
-  return `
-    SELECT * FROM public.journey_seats 
-    WHERE id = '${id}';
-  `;
+const getJourneySeatsByIds = (seatIds: string[]) => {
+  const placeholders = seatIds.map((_, index) => `$${index + 1}`).join(', ');
+
+  return {
+    text: `
+      SELECT * FROM public.journey_seats 
+      WHERE id IN (${placeholders});
+    `,
+    values: seatIds,
+  };
+}
+
+const getJourneySeatsById = (seatId: string) => {
+  return {
+    text: `
+      SELECT * FROM public.journey_seats 
+      WHERE id = $1;
+    `,
+    values: [seatId],
+  };
 };
 
-// Function to reserve a seat by updating its 'is_booked' status
-const reserveSeat = (seatId: string) => {
-  return `
-       UPDATE public.journey_seats 
-      SET "is_booked" = TRUE 
-      WHERE "id" = '${seatId}' 
-      RETURNING *;
-    `;
-};
+const reserveSeats = (seatIds: string[]) => {
+  const placeholders = seatIds.map((_, index) => `$${index + 1}`).join(', ');
 
-const updateBookingId = (id:string, bookingReference:string)=>{
-  return `
+  return {
+    text: `
       UPDATE public.journey_seats 
-      SET "booking_id"='${bookingReference}'
-      WHERE "id"='${id}' 
+      SET "is_booked" = TRUE 
+      WHERE id IN (${placeholders}) 
       RETURNING *;
-    `;
+    `,
+    values: seatIds,
+  };
+};
+
+const updateBookingId = (id: string, bookingReference: string) => {
+  return {
+    text: `
+      UPDATE public.journey_seats 
+      SET "booking_id" = $1 
+      WHERE "id" = $2 
+      RETURNING *;
+    `,
+    values: [bookingReference, id],
+  };
 }
 
 export default {
   addJourneySeats,
   getJourneySeatsByScheduleId,
   getSeatById,
+  getJourneySeatsByIds,
   getJourneySeatsById,
-  reserveSeat,
+  reserveSeats,
   updateBookingId,
 };
