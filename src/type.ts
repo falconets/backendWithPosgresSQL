@@ -294,3 +294,55 @@ export type JourneyInstance = {
   parent: any;
   args: journeyInstanceProps;
 }
+
+export type companyRevenueReport={
+  booking_date: number |string
+  total_revenue: number
+  total_bookings: number
+}
+
+export type companyRevenueReportProps={
+  companyId: number
+  date: string
+}
+
+export type companyRevenueReportType = {
+  parent: any;
+  args: companyRevenueReportProps;
+}
+
+export type seatAllocationStatsProps = {
+  bus_plate_number?: string
+  routeId?: string
+  total_seats: number
+  total_available_seats: number
+  total_booked_seats: number
+}
+
+export interface seatAllocationStats{
+  date?:string
+  companyId?:number
+  busId: number
+  journeyInstanceId: string
+}
+
+export type seatAllocationStatsType = {
+  parent: any;
+  args: seatAllocationStats;
+}
+
+export type companyRevenueByPaymnentMethodProp = {
+  paymentMethod: string
+  total_revenue: number
+  number_of_tickets: number
+}
+
+export interface companyRevenueByPaymnentMethod{
+  companyId: number
+  date?: string
+}
+
+export type companyRevenueByPaymnentMethodType = {
+  parent: any;
+  args: companyRevenueByPaymnentMethod;
+}

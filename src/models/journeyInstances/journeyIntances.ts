@@ -46,7 +46,7 @@ const getJourneyInstancesByScheduleId = async (
   try {
     const snapshot = await firestore
       .collection(CollectionName.JOURNEY_INSTANCES)
-      .where('scheduleId', "==", scheduleId)
+      .where("scheduleId", "==", scheduleId)
       .get();
     const data: journeyInstanceProps[] = [];
     snapshot.forEach((doc: any) => {
@@ -59,26 +59,41 @@ const getJourneyInstancesByScheduleId = async (
   }
 };
 
+
 const getJourneyInstancesByDate = async (
   firestore: FirebaseFirestore.Firestore,
   date: string
 ): Promise<journeyInstanceProps[]> => {
   try {
-    const snapshot = await firestore
+    // Construct the query for fetching journey instances on or after the given date
+    const query = firestore
       .collection(CollectionName.JOURNEY_INSTANCES)
-      .where("journeyDate", ">=", date)
-      .get();
+      .where('journeyDate', '>=', date);
 
-    const data: journeyInstanceProps[] = [];
-    snapshot.forEach((doc: any) => {
-      const docData = doc.data() as journeyInstanceProps;
-      data.push({ id: doc.id, ...docData });
-    });
+    // Execute the query and retrieve the matching documents
+    const snapshot = await query.get();
+
+    // Filter and process results with type safety
+    const data: journeyInstanceProps[] = snapshot.docs
+      .map((doc) => {
+        const docData = doc.data() as journeyInstanceProps;
+        const journeyDate: string= docData.journeyDate as string; // Extract date part
+        const extDate = journeyDate.split('T')[0]
+
+        // Return the document if the date matches exactly
+        if (extDate === date) {
+          return { id: doc.id, ...docData };
+        }
+      })
+      .filter(Boolean) as journeyInstanceProps[]; // Filter out undefined results
+
     return data;
   } catch (err) {
+    console.error("Error fetching journey instances:", err);
     throw new Error("Failed to get journey instances by date");
   }
 };
+
 
 /**
  * this queries the collection for journey instances
@@ -101,7 +116,7 @@ const getJourneyInstancesById = async (
     const data = doc.data() as journeyInstanceProps;
     return { id: doc.id, ...data };
   } catch (err) {
-    console.log(err)
+    console.log(err);
     throw new Error("Failed to get journey instance by id");
   }
 };
@@ -109,7 +124,7 @@ const getJourneyInstancesById = async (
 const getJourneyInstancesByBusId = async (
   firestore: FirebaseFirestore.Firestore,
   busId: string
-):Promise<journeyInstanceProps[]> => {
+): Promise<journeyInstanceProps[]> => {
   try {
     const snapshot = await firestore
       .collection(CollectionName.JOURNEY_INSTANCES)
@@ -129,7 +144,7 @@ const getJourneyInstancesByBusId = async (
 const getJourneyInstancesByRouteId = async (
   firestore: FirebaseFirestore.Firestore,
   routeId: string
-):Promise<journeyInstanceProps[]> => {
+): Promise<journeyInstanceProps[]> => {
   try {
     const snapshot = await firestore
       .collection(CollectionName.JOURNEY_INSTANCES)
@@ -147,6 +162,33 @@ const getJourneyInstancesByRouteId = async (
   }
 };
 
+const deleteJourneyInstancesByScheduleId = async (
+  firestore: FirebaseFirestore.Firestore,
+  scheduleId: string
+): Promise<void> => {
+  const journeyInstancesRef = firestore
+    .collection(CollectionName.JOURNEY_INSTANCES)
+    .where("scheduleId", "==", scheduleId);
+
+  try {
+    const snapshot = await journeyInstancesRef.get();
+
+    if (snapshot.empty) {
+      return;
+    }
+
+    const batch = firestore.batch();
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+  } catch (err) {
+    throw new Error("Failed to delete journey instances by schedule id");
+  }
+};
+
+
 export default {
   addJourneyInstance,
   getJourneyInstancesByScheduleId,
@@ -154,4 +196,5 @@ export default {
   getJourneyInstancesById,
   getJourneyInstancesByBusId,
   getJourneyInstancesByRouteId,
+  deleteJourneyInstancesByScheduleId,
 };

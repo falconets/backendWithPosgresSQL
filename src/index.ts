@@ -33,7 +33,7 @@ const server = new ApolloServer({
 });
 
 const corsOptions = {
-  origin: ['http://localhost:5073', 'https://hubadmin-production.up.railway.app', 'http://localhost:4073'], // Set this to your trusted domains or '*' for any origin
+  origin: ['http://localhost:5073', 'https://hubadmin-production.up.railway.app', 'http://localhost:4073', 'https://busticketfrontend-production.up.railway.app/'], // Set this to your trusted domains or '*' for any origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };

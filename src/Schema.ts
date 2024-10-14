@@ -159,6 +159,32 @@ export const typeDefs = `#graphql
     createdAt: DateTime
   }
 
+  type companyMonthlyRevenueReport{
+    booking_date: DateTime!
+    total_revenue: Int!
+    total_bookings: Int!
+  }
+  
+  type seatAllocationStats{
+    total_seats: Int!
+    total_booked_seats: Int!
+    total_available_seats: Int!
+  }
+  
+  type busSeatOccupancyReport{
+    bus_plate_number: String!
+    routeId: String
+    total_seats: Int!
+    total_booked_seats: Int!
+    total_available_seats: Int!
+  }
+
+  type companyRevenueByPaymentMethod{
+    paymentMethod: String!
+    total_revenue: Int!
+    number_of_tickets: Int!
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -219,6 +245,22 @@ export const typeDefs = `#graphql
    getJourneyInstancesById(id:String!): [JourneyInstances]
    getJourneyInstancesByBusId(busPlateNumber:String!): [JourneyInstances]
    getJourneyInstancesByRouteId(routeId:String!): [JourneyInstances]
+
+   #statistics
+   company_monthly_revenue_report(companyId:Int!, date:String!): [companyMonthlyRevenueReport]
+   company_total_monthly_revenue_report(companyId:Int!, date:String!): companyMonthlyRevenueReport
+   company_total_week_revenue_report(companyId:Int!,date:String!): companyMonthlyRevenueReport
+   company_day_revenue_report(companyId:Int!, date:String!): [companyMonthlyRevenueReport]
+   company_revenue_payment_method_by_day(companyId:Int!, date:String!): companyRevenueByPaymentMethod
+   company_revenue_payment_method_by_week(companyId:Int!, date:String!): companyRevenueByPaymentMethod
+   company_revenue_payment_method_by_month(companyId:Int!, date:String!): companyRevenueByPaymentMethod
+   company_revenue_payment_method_by_year(companyId:Int!, date:String!): companyRevenueByPaymentMethod
+   list_tickets_by_day(companyId:Int!, date:String!): [Tickets]
+   list_tickets_by_week(companyId:Int!, date:String!): [Tickets]
+   list_tickets_by_month(companyId:Int!, date:String!): [Tickets]
+   seat_allocation_stats(busId:Int!, journeyInstanceId: String!): seatAllocationStats
+   company_revenue_by_payment_method(companyId:Int!): [companyRevenueByPaymentMethod]
+   bus_seat_occupancy_report(date:String!, companyId:Int!): [busSeatOccupancyReport]
 
   }#end of Query type definitions
 

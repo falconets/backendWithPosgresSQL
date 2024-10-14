@@ -8,6 +8,7 @@ import ticketQuery from "./BusTicketsQueries"
 import BusSeats from "./BusSeats"
 import JourneySeats from "./JourneySeats"
 import JourneyInstances from "./JourneyInstances"
+import Statistics from "./Statistics"
 
 export const Query = {
       ...bookQuery,
@@ -19,5 +20,6 @@ export const Query = {
       ...ticketQuery,
       ...BusSeats,
       ...JourneySeats,
-      ...JourneyInstances
+      ...JourneyInstances,
+      ...Statistics
 }

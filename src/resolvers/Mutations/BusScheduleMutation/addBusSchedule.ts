@@ -23,27 +23,21 @@ export const addBusSchedule = async (
     // Firestore transaction to ensure atomicity
     return await firestore.runTransaction(async (transaction) => {
 
-      // Fetch the bus using its plate number
-      const resBus = await client.query(
-        models.buses.busByPlateNumber(args.busPlateNumber)
-      );
+        // Fetch the bus and its seat layout using PostgreSQL
+    const resBus = await client.query(
+      `SELECT buses.*, bus_seats.* 
+       FROM buses 
+       LEFT JOIN bus_seats ON buses.bus_id = "busId"
+       WHERE buses.plate_number = $1`,
+       [args.busPlateNumber]
+    );
 
-      if (!resBus || resBus.rowCount === 0) {
-        throw new GraphQLError("Bus not found!");
-      }
+    if (!resBus || resBus.rowCount === 0) {
+      throw new GraphQLError("Bus not found!");
+    }
 
-      const bus: busesProp = resBus.rows[0];
-
-      // Fetch the bus seat layout using bus_id
-      const resSeats = await client.query(
-        models.bus_seats.getSeatsByBusId(bus.bus_id as string)
-      );
-
-      if (!resSeats || resSeats.rowCount === 0) {
-        throw new GraphQLError("Bus seat layout not found!");
-      }
-
-      const seatLayout: BusSeats[] = resSeats.rows;
+    const bus: busesProp = resBus.rows[0];  // First bus result
+    const seatLayout: BusSeats[] = resBus.rows; // Seat layout
 
       // Expand recurrences to generate individual trip dates
       const recurrenceDatesSchedule = expandRecurrenceDates(args);

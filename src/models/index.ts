@@ -8,6 +8,7 @@ import tickets from "./tickets";
 import bus_seats from "./bus_seats";
 import journey_seats from "./journey_seats";
 import journeyInstances from "./journeyInstances";
+import statistic from "./statistic";
 
 export default {
   Book,
@@ -19,5 +20,6 @@ export default {
   tickets,
   bus_seats,
   journey_seats,
-  journeyInstances
+  journeyInstances,
+  statistic
 };

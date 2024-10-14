@@ -86,6 +86,18 @@ const updateBookingId = (id: string, bookingReference: string) => {
   };
 }
 
+const deleteJourneySeats = (scheduleId: string[]) => {
+  const placeholders = scheduleId.map((_, index) => `$${index + 1}`).join(', ');
+
+  return {
+    text: `
+      DELETE FROM public.journey_seats 
+      WHERE "schedule_id" IN (${placeholders});
+    `,
+    values: scheduleId,
+  };
+}
+
 export default {
   addJourneySeats,
   getJourneySeatsByScheduleId,
@@ -94,4 +106,5 @@ export default {
   getJourneySeatsById,
   reserveSeats,
   updateBookingId,
+  deleteJourneySeats,
 };
