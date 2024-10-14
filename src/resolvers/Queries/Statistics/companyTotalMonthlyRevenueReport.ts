@@ -14,7 +14,6 @@ import {
       const res = await db.query(
         models.statistic.company_total_monthly_revenue_report(args)
       );
-      console.log('test',res.rows)
       const data = {
         booking_date: args.date,
         total_revenue: res.rows[0].total_revenue,

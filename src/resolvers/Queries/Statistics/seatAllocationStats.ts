@@ -14,7 +14,6 @@ import {
       const res = await db.query(
         models.statistic.seat_allocation_stats(args.busId,args.journeyInstanceId)
       );
-      console.log(res.rows)
       return res.rows[0];
     } catch (error) {
       throw new GraphQLError("something wrong happened!");

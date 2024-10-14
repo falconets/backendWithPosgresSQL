@@ -12,10 +12,11 @@ export const bus_seat_occupancy_report = async (
 ): Promise<seatAllocationStatsProps[]> => {
   try {
     // Step 1: Fetch journey instances by date
-    const getJourneyInstancesByDate = await models.journeyInstances.getJourneyInstancesByDate(
-      firestore,
-      args.date as string
-    );
+    const getJourneyInstancesByDate =
+      await models.journeyInstances.getJourneyInstancesByDate(
+        firestore,
+        args.date as string
+      );
 
     // Step 2: Map journey instances to their IDs
     const journeyInstances = getJourneyInstancesByDate.map(
@@ -25,23 +26,28 @@ export const bus_seat_occupancy_report = async (
     if (journeyInstances.length > 0) {
       // Step 3: Run the bus seat occupancy report query with the journey instance IDs
       const res = await db.query(
-        models.statistic.bus_seat_occupancy_report(journeyInstances, args.companyId as number)
+        models.statistic.bus_seat_occupancy_report(
+          journeyInstances,
+          args.companyId as number
+        )
       );
 
       // Step 4: Map the results to match the seatAllocationStatsProps structure
-      const seatAllocationStats: seatAllocationStatsProps[] = res.rows.map((row) => {
-        const journeyInstance = getJourneyInstancesByDate.find(
-          (instance) => instance.id === row.journey_instance_id
-        );
-        
-        return {
-          bus_plate_number: row.bus_plate_number,
-          routeId: journeyInstance?.routeId || undefined,
-          total_seats: row.total_seats,
-          total_available_seats: row.total_available_seats,
-          total_booked_seats: row.total_booked_seats
-        };
-      });
+      const seatAllocationStats: seatAllocationStatsProps[] = res.rows.map(
+        (row) => {
+          const journeyInstance = getJourneyInstancesByDate.find(
+            (instance) => instance.id === row.journey_instance_id
+          );
+
+          return {
+            bus_plate_number: row.bus_plate_number,
+            routeId: journeyInstance?.routeId || undefined,
+            total_seats: row.total_seats,
+            total_available_seats: row.total_available_seats,
+            total_booked_seats: row.total_booked_seats,
+          };
+        }
+      );
 
       return seatAllocationStats;
     } else {
@@ -52,4 +58,3 @@ export const bus_seat_occupancy_report = async (
     throw new GraphQLError("Something went wrong!");
   }
 };
-
