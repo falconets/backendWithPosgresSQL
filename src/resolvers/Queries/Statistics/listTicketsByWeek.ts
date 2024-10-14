@@ -1,13 +1,13 @@
 import {
-    companyMonthlyRevenueReportType,
+    companyRevenueReportType,
     Context,
     Tickets,
   } from "@types";
   import { GraphQLError } from "graphql";
   
   export const list_tickets_by_week = async (
-    parent: companyMonthlyRevenueReportType["parent"],
-    args: companyMonthlyRevenueReportType["args"],
+    parent: companyRevenueReportType["parent"],
+    args: companyRevenueReportType["args"],
     { models, db }: Context
   ): Promise<Tickets[]> => {
     try {
