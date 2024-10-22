@@ -60,6 +60,7 @@ export type Context = {
   user: any;
   firestore: FirebaseFirestore.Firestore;
   mtn: typeof mtn;
+  res: any
 };
 
 export interface tokenProp {

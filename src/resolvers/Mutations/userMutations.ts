@@ -44,10 +44,9 @@ export const userMutations = {
   signIn: async (
     parent: User["parent"],
     args: User["args"],
-    { db, models }: Context
+    { db, models, res }: Context
   ) => {
     try {
-      console.log(args)
       const checkEmail = await db.query(models.users.checkUser(args));
       if (checkEmail?.rows.length >= 1 && JWT_SECRETE !== undefined) {
         const valid = await bcrypt.compare(
@@ -55,27 +54,42 @@ export const userMutations = {
           checkEmail.rows[0].password
         );
         if (!valid) {
-          console.log("valid", valid);
-          throw new GraphQLError("Error signing in!");
+          throw new GraphQLError("Invalid credentials");
         }
-
+  
         const expiresInDays = 1;
-        const expirationTime =
-          Math.floor(Date.now() / 1000) + expiresInDays * 24 * 60 * 60;
-
+        const expirationTime = Math.floor(Date.now() / 1000) + expiresInDays * 24 * 60 * 60;
+  
         const payload = {
           userId: checkEmail.rows[0].id,
           exp: expirationTime,
         };
-
-        return `${jwt.sign(payload, JWT_SECRETE)} ${checkEmail.rows[0].id}`;
+  
+        const token = jwt.sign(payload, JWT_SECRETE);
+  
+        // Set the token in an HTTP-only cookie
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: false, //process.env.NODE_ENV === "production",
+          sameSite: "None",//"Strict",
+          maxAge: expiresInDays * 24 * 60 * 60 * 1000, // 1 day
+        });
+  
+        console.log("Token set in HTTP-only cookie");
+  
+        return JSON.stringify({
+          message: "Login successful",
+          userId: checkEmail.rows[0].id,
+        });
       } else {
-        throw new GraphQLError("Error signing in!!");
+        throw new GraphQLError("Error signing in!");
       }
     } catch (error) {
-      throw new GraphQLError("Invalid credentials!!");
+      console.error("Error in signIn:", error);
+      throw new GraphQLError("Invalid credentials");
     }
   },
+  
   removeUser: async (
     parent: User["parent"],
     args: User["args"],

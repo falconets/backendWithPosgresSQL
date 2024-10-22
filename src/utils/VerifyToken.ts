@@ -1,12 +1,18 @@
 import dotenv from "dotenv";
 import { tokenProp } from "@types";
 import jwt from "jsonwebtoken";
+import { GraphQLError } from "graphql";
 
 dotenv.config();
 
 const JWT_SECRETE = process.env.JWT_SECRETE;
 
 export const verifyToken = (t: tokenProp) => {
+
+  if (!t.token) {
+    throw new GraphQLError("No token found in cookies!");
+  }
+  
   if (t.token && JWT_SECRETE !== undefined) {
     try {
       //return the user information from the token

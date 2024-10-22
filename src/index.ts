@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
@@ -9,7 +10,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import http from "http";
 import { typeDefs } from "./Schema.js";
 import { resolvers } from "./resolvers";
-import data from "./config";
+import connection from "./config";
 import models from "./models";
 import { verifyToken } from "./utils/VerifyToken.js";
 
@@ -56,14 +57,35 @@ server.start().then(() => {
       extended: true,
       limit: "100kb",
     }),
+    cookieParser(),
     expressMiddleware(server, {
-      context: async ({ req }) => {
-        const token = req.headers.authorization || "";
-        const user = verifyToken({ token });
-        const db = data.Pool;
-        const firestore = data.firestore;
-        const mtn = data.mtn;
-        return { db, models, user, firestore, mtn };
+      context: async ({ req, res }) => {
+        const db = connection.Pool;
+        const firestore = connection.firestore;
+        const mtn = connection.mtn;
+
+        console.log("Cookies received:", req.cookies);
+        console.log("Token extracted:", req.cookies.token);
+
+        const token = req.cookies.token || ""; // `req.cookies` contains parsed cookies
+
+        if (!token) {
+          console.log("No token found in cookies.");
+          return { db, models, user: null, firestore, mtn, res }; // User not authenticated
+        }
+
+        // Verify the token (assuming verifyToken is your token verification function)
+        let user;
+        try {
+          user = verifyToken({ token }); // Add token validation here
+        } catch (error) {
+          console.error("Error verifying token:", error);
+          user = null; // Invalid token
+        }
+
+        console.log("Authenticated user:", user);
+
+        return { db, models, user, firestore, mtn, res };
       },
     })
   );

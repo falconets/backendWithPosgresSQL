@@ -8,7 +8,7 @@ export const toggleBusRoutesActive = async (
 ): Promise<BusRoutesProps> => {
       try{
             console.log(user)
-            if(user){
+            if(!user){
                   const toggle = await db.query(models.routes.toggleBusRoutesActive(args))
                   return toggle.rows[0]
             }else{
