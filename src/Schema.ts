@@ -185,12 +185,21 @@ export const typeDefs = `#graphql
     number_of_tickets: Int!
   }
 
+  type fetchHourlyTicketSales{
+    purchase_hour: String!
+    ticket_count: Int!
+    total_amount: Int!
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     books: [Book]!
     oneBook(id:String!): Book
+
+    #validate session
+    validateSession: String
 
     #Company queries
     allCompanies: [Company]
@@ -228,7 +237,7 @@ export const typeDefs = `#graphql
    getTicketsByStatus(status: String!): [Tickets]
    getTicketsByDate(date: DateTime!): [Tickets]
    getTicketsById(id: String!): Tickets
-   getTicketsByCompanyId(company_id:Int!): [Tickets]
+   getTicketsByCompanyId(companyId:Int!): [Tickets]
 
    #Bus Seats queries
    getSeatsByBusId(busId:String!): [BusSeats]
@@ -261,6 +270,7 @@ export const typeDefs = `#graphql
    seat_allocation_stats(busId:Int!, journeyInstanceId: String!): seatAllocationStats
    company_revenue_by_payment_method(companyId:Int!): [companyRevenueByPaymentMethod]
    bus_seat_occupancy_report(date:String!, companyId:Int!): [busSeatOccupancyReport]
+   fetchHourlyTicketSales(companyId:Int!, date:String!): [fetchHourlyTicketSales]
 
   }#end of Query type definitions
 

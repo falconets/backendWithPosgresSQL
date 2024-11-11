@@ -70,7 +70,7 @@ export const userMutations = {
         // Set the token in an HTTP-only cookie
         res.cookie("token", token, {
           httpOnly: true,
-          secure: false, //process.env.NODE_ENV === "production",
+          secure: true, //process.env.NODE_ENV === "production",
           sameSite: "None",//"Strict",
           maxAge: expiresInDays * 24 * 60 * 60 * 1000, // 1 day
         });

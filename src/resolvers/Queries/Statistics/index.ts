@@ -8,6 +8,7 @@ import { company_revenue_payment_method_by_week } from "./companyRevenuePaymentM
 import { company_revenue_payment_method_by_year } from "./companyRevenuePaymentMethodByYear";
 import { company_total_monthly_revenue_report } from "./companyTotalMonthlyRevenueReport";
 import { company_total_week_revenue_report } from "./companyTotalWeekRevenueReport";
+import { fetchHourlyTicketSales } from "./fetchHourlyTicketSales";
 import { list_tickets_by_day } from "./listTicketsByDay";
 import { list_tickets_by_month } from "./listTicketsByMonth";
 import { list_tickets_by_week } from "./listTicketsByWeek";
@@ -28,4 +29,5 @@ export default {
   seat_allocation_stats,
   company_revenue_by_payment_method,
   bus_seat_occupancy_report,
+  fetchHourlyTicketSales
 };

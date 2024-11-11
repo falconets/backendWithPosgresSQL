@@ -1,15 +1,15 @@
 import { TicketProps } from "@types";
-import { tracks } from "../../tables";
+//import { tracks } from "../../tables";
 import { v4 as uuidv4 } from "uuid";
 
-const table = tracks.TICKETS;
+//const table = tracks.TICKETS;
 
 const getTickets = () => {
   return `SELECT * FROM public.tickets;`;
 };
 
 const getTicketsByCompanyId = (arg: TicketProps) => {
-  return `SELECT * FROM ${table} WHERE "companyId"=${arg.companyId};`;
+  return `SELECT * FROM public.tickets WHERE "companyId"=${arg.companyId};`;
 };
 
 const addTicket = (arg: TicketProps) => {

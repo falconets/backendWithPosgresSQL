@@ -12,7 +12,7 @@ export const getTicketsByCompanyId = async (
     console.log(res.rowCount);
     return res.rows.slice(0, 99);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     throw new GraphQLError("Failed to return tickets!");
   }
 };

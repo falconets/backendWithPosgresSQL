@@ -40,6 +40,10 @@ const userQuery = {
       throw new GraphQLError("Failed to retrieve user!");
     }
   },
+  validateSession: async(parent:string, args:string, {user}:Context)=>{
+    if(user) return user.userId
+    else throw new GraphQLError("Session not found!");
+  }
 };
 
 export default userQuery;

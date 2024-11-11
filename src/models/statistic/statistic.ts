@@ -1,10 +1,35 @@
 import { companyRevenueReportProps } from "@types";
 
-const company_total_monthly_revenue_report = (args: companyRevenueReportProps)=>{
+/**
+ * To create a query that fetches the number of tickets booked for specific
+ *  routes per day in a particular month, you can utilize the tickets table,
+ *  which includes fields for routeid, createdAt (timestamp), and other ticket details
+ * @param args 
+ * @returns 
+ */
+
+// SELECT 
+//     "routeId",
+//     DATE("createdAt") AS booking_date,
+//     COUNT("ticketId") AS tickets_booked
+// FROM 
+//     tickets
+// WHERE 
+//     EXTRACT(MONTH FROM "createdAt") = '10' AND
+//     EXTRACT(YEAR FROM "createdAt") = '2024' AND
+// 	"companyId"= 1
+// GROUP BY 
+//     "routeId", DATE("createdAt")
+// ORDER BY 
+//     "routeId", booking_date;
+
+const company_total_monthly_revenue_report = (
+  args: companyRevenueReportProps
+) => {
   const month = new Date(args.date).getMonth() + 1;
   const year = new Date(args.date).getFullYear();
-  return{
-    text:`
+  return {
+    text: `
       SELECT 
       EXTRACT(MONTH FROM "createdAt") AS booking_month, 
       COUNT("ticketId") AS total_bookings,
@@ -18,13 +43,13 @@ const company_total_monthly_revenue_report = (args: companyRevenueReportProps)=>
       GROUP BY 
           booking_month;
     `,
-    values:[args.companyId, month, year]
-  }
-}
+    values: [args.companyId, month, year],
+  };
+};
 
-const company_total_week_revenue_report = (args: companyRevenueReportProps)=>{
+const company_total_week_revenue_report = (args: companyRevenueReportProps) => {
   return {
-    text:`
+    text: `
       SELECT 
       DATE_TRUNC('week', t."createdAt") AS booking_week, 
       COUNT("ticketId") AS total_bookings,
@@ -39,18 +64,16 @@ const company_total_week_revenue_report = (args: companyRevenueReportProps)=>{
       ORDER BY 
           booking_week ASC;
     `,
-    values: [args.companyId, args.date]
-  }
-}
+    values: [args.companyId, args.date],
+  };
+};
 
 /**
  * this return monthly revenue for each day of a given month
  * @param args companyId date
  * @returns booking_date, total_revenue, total_booking
  */
-const company_monthly_revenue_report = (
-  args: companyRevenueReportProps
-) => {
+const company_monthly_revenue_report = (args: companyRevenueReportProps) => {
   const month = new Date(args.date).getMonth() + 1;
   const year = new Date(args.date).getFullYear();
   return {
@@ -285,7 +308,7 @@ const company_revenue_payment_method_by_date_range = (
       GROUP BY 
           t."paymentMethod";
     `,
-    values: [companyId,formattedStartDate, formattedEndDate],
+    values: [companyId, formattedStartDate, formattedEndDate],
   };
 };
 
@@ -320,6 +343,31 @@ const bus_seat_occupancy_report = (
   };
 };
 
+const fetchHourlyTicketSales = (companyId: number, date: string) => {
+  const formattedDate = new Date(date).toISOString().slice(0, 10); // Format date as 'YYYY-MM-DD'
+
+  return {
+    text: `
+      SELECT 
+      DATE_TRUNC('hour', "createdAt") AS purchase_hour,
+      COUNT("ticketId") AS ticket_count,
+      SUM(amount) AS total_amount
+    FROM 
+        public.tickets
+    WHERE 
+        DATE("createdAt") = $2
+        AND "companyId" = $1
+    GROUP BY 
+        purchase_hour
+    ORDER BY 
+        purchase_hour;
+    `,
+    values: [companyId, formattedDate],
+  };
+};
+
+
+
 export default {
   company_monthly_revenue_report,
   company_total_monthly_revenue_report,
@@ -336,4 +384,5 @@ export default {
   seat_allocation_stats,
   company_revenue_by_payment_method,
   bus_seat_occupancy_report,
+  fetchHourlyTicketSales,
 };

@@ -54,10 +54,16 @@ export type User = {
   args: UserProps;
 };
 
+type userTokenType = {
+  userId: string 
+  exp: string
+  iat: string
+}
+
 export type Context = {
   db: Pool;
   models: typeof models;
-  user: any;
+  user: userTokenType | null
   firestore: FirebaseFirestore.Firestore;
   mtn: typeof mtn;
   res: any
